@@ -1,0 +1,48 @@
+    php artisan migrate
+    php artisan migrate:fresh
+
+    php artisan db:seed
+
+    $table->timestamp('created_at')->useCurrent();
+    $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
+
+
+class User extends Model
+{
+    use HasFactory;
+
+    protected $table = "user";
+    protected $fillable = ['uid', 'email', 'password', 'logged_at', 'stat', 'role'];
+    protected $hidden = ['password'];
+    protected $casts = [
+        'logged_at' => 'datetime',
+    ];
+    public function projects()
+    {
+        return $this->belongsToMany(Project::class, 'project_user', 'user_id', 'project_id');
+    }
+}
+
+
+class Project extends Model
+{
+    public $timestamps = false;
+    protected $fillable = [
+        'name',
+        'description',
+        'status',
+        'start_date',
+        'end_date',
+        'created_at'
+    ];
+    protected $casts = [
+        'start_date' => 'date',
+        'end_date' => 'date',
+        'created_at' => 'datetime',
+    ];
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'project_user', 'project_id', 'user_id');
+    }
+}
