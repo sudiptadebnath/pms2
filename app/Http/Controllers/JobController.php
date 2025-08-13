@@ -34,6 +34,7 @@ class JobController extends Controller
         if ($task->stat == "s") $task->start_date = now();
         if (in_array($task->stat, ["c", "f", "a"])) {
             $task->end_date = now();
+            $task->used_hour = 5.63;
         }
 
         $task->save();
