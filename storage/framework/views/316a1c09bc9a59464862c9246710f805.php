@@ -1,4 +1,18 @@
 
+
+<?php $__env->startSection('styles'); ?>
+<style>
+.row > [class*='col-'] {
+    border-right: 1px dashed #ccc; /* color and thickness */
+}
+
+/* Remove border on last column in the row */
+.row > [class*='col-']:last-child {
+    border-right: none;
+}
+</style>
+<?php $__env->stopSection(); ?>
+
 <?php $__env->startSection('content'); ?>
 <div class="container vw-100 mb-3">
     <h3 class="d-flex border-1 border-bottom pb-2">
@@ -29,14 +43,14 @@
 <div class="row">
     <?php if (isset($component)) { $__componentOriginal07d555aaec4517a1fb1f70d8cef5a230 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal07d555aaec4517a1fb1f70d8cef5a230 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.jobs','data' => ['size' => '4','title' => 'Pending','data' => $jobs]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.jobs','data' => ['size' => '4','title' => 'Pending','data' => $jobsP]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('jobs'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
 <?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['size' => '4','title' => 'Pending','data' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($jobs)]); ?>
+<?php $component->withAttributes(['size' => '4','title' => 'Pending','data' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($jobsP)]); ?>
 <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginal07d555aaec4517a1fb1f70d8cef5a230)): ?>
@@ -49,14 +63,14 @@
 <?php endif; ?>
     <?php if (isset($component)) { $__componentOriginal07d555aaec4517a1fb1f70d8cef5a230 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal07d555aaec4517a1fb1f70d8cef5a230 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.jobs','data' => ['size' => '4','title' => 'In Progress','data' => $jobs]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.jobs','data' => ['size' => '4','title' => 'In Progress','data' => $jobsS]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('jobs'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
 <?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['size' => '4','title' => 'In Progress','data' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($jobs)]); ?>
+<?php $component->withAttributes(['size' => '4','title' => 'In Progress','data' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($jobsS)]); ?>
 <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginal07d555aaec4517a1fb1f70d8cef5a230)): ?>
@@ -69,14 +83,14 @@
 <?php endif; ?>
     <?php if (isset($component)) { $__componentOriginal07d555aaec4517a1fb1f70d8cef5a230 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal07d555aaec4517a1fb1f70d8cef5a230 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.jobs','data' => ['size' => '4','title' => 'Completed','data' => $jobs]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.jobs','data' => ['size' => '4','title' => 'Completed','data' => $jobsC]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('jobs'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
 <?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['size' => '4','title' => 'Completed','data' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($jobs)]); ?>
+<?php $component->withAttributes(['size' => '4','title' => 'Completed','data' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($jobsC)]); ?>
 <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginal07d555aaec4517a1fb1f70d8cef5a230)): ?>

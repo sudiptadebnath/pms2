@@ -2,8 +2,9 @@
 
 <?php $__env->startSection('styles'); ?>
 <style>
-.started td { color:gray !important; }    
-.completed td { color:green !important; }
+.planned td { color:gray !important; }    
+.started td { color:green !important; }
+.completed td { color:rgb(5, 5, 5) !important; }    
 .failed td { color:red !important; }
 .abandoned td { text-decoration: line-through; }
 </style>
@@ -125,14 +126,14 @@
 <?php endif; ?>
             <?php if (isset($component)) { $__componentOriginal20bb1f77d056b8fba1ac560ae63e55c3 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal20bb1f77d056b8fba1ac560ae63e55c3 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.mselect','data' => ['icon' => 'person','name' => 'user_id','title' => 'User','value' => $users,'multiple' => 'false']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.mselect','data' => ['icon' => 'person','name' => 'user_id','title' => 'User','value' => [],'multiple' => 'false']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('mselect'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
 <?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['icon' => 'person','name' => 'user_id','title' => 'User','value' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($users),'multiple' => 'false']); ?>
+<?php $component->withAttributes(['icon' => 'person','name' => 'user_id','title' => 'User','value' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute([]),'multiple' => 'false']); ?>
 <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginal20bb1f77d056b8fba1ac560ae63e55c3)): ?>
@@ -178,6 +179,24 @@
 
 <?php $__env->startSection('scripts'); ?>
 <script>
+
+function loadUsers(pid,sel) {
+    if (!pid) return;
+    let $userSelect = $('#user_id');
+    webserv("GET","projects/"+pid+"/users",{}, function (d) {
+        $userSelect.empty(); 
+        $userSelect.append('<option value="">Select User</option>');
+        $.each(d["data"], function (i, user) {
+            let option = new Option(user.uid, user.id, false, user.id == (typeof sel === 'undefined' ? '' : sel));
+            $userSelect.append(option);
+        });        
+        $userSelect.trigger('change');
+    });
+}
+
+$('#project_id').on('change', function () {
+    loadUsers($(this).val());
+});
 
 $(document).ready(function () {
     $("#taskForm").validate({
@@ -241,6 +260,7 @@ $(document).ready(function () {
 function addTask() {
     $('#taskForm')[0].reset();
     $('#id').val(''); 
+    loadUsers($('#project_id').val());
     $('#users').val(null).trigger('change');
     $('#taskModalLabel').text("Add Task");
     $('.error').text('');
@@ -253,7 +273,7 @@ function editTask(id) {
         $('#id').val(data.id);
         $('#title').val(data.title);
         $('#description').val(data.description);
-        $('#users').val(data.users).trigger('change');
+        loadUsers($('#project_id').val(),data.user_id);
         $('#taskModalLabel').text('Edit Task');
         $('#taskModal').modal('show');
     });    

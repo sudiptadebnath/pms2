@@ -17,6 +17,7 @@
 	
 	<link rel="stylesheet" href={{ asset("resources/css/style.css") }}>
     @yield('styles') 
+    @stack('styles') 
 </head>
 	
 <body onload="myLoad();">

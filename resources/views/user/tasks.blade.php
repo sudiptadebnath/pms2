@@ -48,7 +48,7 @@
             <x-mselect icon="clipboard-data" name="project_id" title="Project" :value="$projects" multiple=false />
             <x-text icon="laptop" name="title" title="Title" required=true />
             <x-textarea icon="journal-text" name="description" title="Description" />
-            <x-mselect icon="person" name="user_id" title="User" :value="$users" multiple=false />
+            <x-mselect icon="person" name="user_id" title="User" :value="[]" multiple=false />
             <x-number icon="alarm" name="target_hour" title="Target Hour" required=true />
         </div>
         </div>
@@ -65,6 +65,24 @@
 
 @section('scripts')
 <script>
+
+function loadUsers(pid,sel) {
+    if (!pid) return;
+    let $userSelect = $('#user_id');
+    webserv("GET","projects/"+pid+"/users",{}, function (d) {
+        $userSelect.empty(); 
+        $userSelect.append('<option value="">Select User</option>');
+        $.each(d["data"], function (i, user) {
+            let option = new Option(user.uid, user.id, false, user.id == (typeof sel === 'undefined' ? '' : sel));
+            $userSelect.append(option);
+        });        
+        $userSelect.trigger('change');
+    });
+}
+
+$('#project_id').on('change', function () {
+    loadUsers($(this).val());
+});
 
 $(document).ready(function () {
     $("#taskForm").validate({
@@ -128,6 +146,7 @@ $(document).ready(function () {
 function addTask() {
     $('#taskForm')[0].reset();
     $('#id').val(''); 
+    loadUsers($('#project_id').val());
     $('#users').val(null).trigger('change');
     $('#taskModalLabel').text("Add Task");
     $('.error').text('');
@@ -140,7 +159,7 @@ function editTask(id) {
         $('#id').val(data.id);
         $('#title').val(data.title);
         $('#description').val(data.description);
-        $('#users').val(data.users).trigger('change');
+        loadUsers($('#project_id').val(),data.user_id);
         $('#taskModalLabel').text('Edit Task');
         $('#taskModal').modal('show');
     });    

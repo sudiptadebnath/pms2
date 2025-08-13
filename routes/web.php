@@ -35,6 +35,7 @@ Route::middleware('check.user.session')->prefix('user')->group(function () {
         Route::get('/{id}', [ProjectController::class, 'get']);
         Route::post('/{id}', [ProjectController::class, 'update']);
         Route::delete('/{id}', [ProjectController::class, 'delete']);
+        Route::get('/{id}/users', [ProjectController::class, 'users']);
     });
 
     Route::prefix('tasks')->group(function () {

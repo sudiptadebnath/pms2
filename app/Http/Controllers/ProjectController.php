@@ -110,4 +110,13 @@ class ProjectController extends Controller
         $project->delete();
         return $this->ok('Project deleted successfully');
     }
+
+    public function users($id)
+    {
+        $project = Project::find($id);
+        if (!$project) {
+            return $this->err("No such project");
+        }
+        return $this->ok("User Lists", ["data" => $project->users()->select('user.id', 'user.uid')->get()]);
+    }
 }

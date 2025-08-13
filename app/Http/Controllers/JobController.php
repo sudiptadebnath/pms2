@@ -6,18 +6,16 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Task;
 use App\Models\Project;
-use App\Models\User;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Validation\Rule;
-use Yajra\DataTables\Facades\DataTables;
 
 class JobController extends Controller
 {
     public function index()
     {
         $projects = Project::orderBy('name')->pluck("name", "id");
-        $jobs = Task::with("project")->orderBy('updated_at', 'desc')->get();
-        return view('user.jobs', compact('projects', 'jobs'));
+        $jobsP = Task::with("project")->where("status", "p")->orderBy('updated_at', 'desc')->get();
+        $jobsS = Task::with("project")->where("status", "s")->orderBy('updated_at', 'desc')->get();
+        $jobsC = Task::with("project")->whereNotIn('status', ['p', 's'])->orderBy('updated_at', 'desc')->get();
+        return view('user.jobs', compact('projects', 'jobsP', 'jobsS', 'jobsC'));
     }
 
     public function update(Request $request, $id)
@@ -30,8 +28,8 @@ class JobController extends Controller
         ]);
         if ($err) return $err;
 
-        $task->stat = $data["stat"];
-        if ($task->stat == "s") $task->start_date = now();
+        $task->status = $data["stat"];
+        if ($task->status == "s") $task->start_date = now();
         if (in_array($task->stat, ["c", "f", "a"])) {
             $task->end_date = now();
             $task->used_hour = 5.63;

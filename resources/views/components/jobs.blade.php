@@ -9,11 +9,11 @@
 @once
 @push('styles')
 <style>
-.cls-p { border-color:gray !important;  }
-.cls-s { border-color:green !important;  }
-.cls-c { border-color:black !important;  }
-.cls-f { border-color:red !important;  }
-.cls-a, .cls-a * { text-decoration: line-through;  }
+.cls-p { background-color:#fbfbfb !important;  }
+.cls-s { background-color: rgb(244,255,244) !important;  }
+.cls-c .text-status { color:green !important;  }
+.cls-f .text-status { color:red !important;  }
+.cls-a .text-status,.cls-a * { text-decoration: line-through;  }
 </style>
 @endpush
 @endonce
@@ -23,7 +23,7 @@
         {{ $title }}
     </h5>
     @foreach($data as $job)
-    <div class="card w-100">
+    <div class="card w-100 mb-2">
     <div class="card-body cls-{{ $job['status'] }}">
         <h5 class="card-title">{{ $job["title"] }}</h5>
         <h6 class="card-subtitle mb-2 text-body-secondary">{{ $job->project->name }}</h6>
@@ -40,7 +40,7 @@
         @case("c" /*COMPLETED*/ ) 
         @case("f" /*FAILED*/ ) 
         @case("a" /*ABANDONED*/ ) 
-        <span class="text-primary">{{ taskStatDict()[$job["status"]] ?? "-" }}</span>
+        <div class="text-status">{{ taskStatDict()[$job["status"]] ?? "-" }}</div>
         @break
     @endswitch
     </div>
@@ -52,8 +52,8 @@
 @once
 @push('scripts')
 <script>
-function setTaskStat(pid,stat) {
-    webserv("POST",`jobs/${id}`, { stat }, function (d) {
+function setTaskStat(tid,stat) {
+    webserv("POST",`jobs/${tid}`, { stat }, function (d) {
         window.location.reload();
     });  
 }

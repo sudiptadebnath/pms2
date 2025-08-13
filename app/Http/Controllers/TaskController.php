@@ -16,7 +16,6 @@ class TaskController extends Controller
     private $validateRules = [
         'project_id' => 'required|exists:projects,id',
         'user_id' => 'required|exists:user,id',
-        'title' => 'required|string|max:200|unique:tasks,title',
         'description' => 'nullable|string',
         'status' => 'nullable',
         'start_date' => 'nullable|date',
@@ -74,7 +73,15 @@ class TaskController extends Controller
     public function create(Request $request)
     {
         $data = $request->all();
-        $err = $this->validate($data, $this->validateRules);
+        $validateRules2 = $this->validateRules;
+        $validateRules2['title'] = [
+            'required',
+            'string',
+            'max:200',
+            Rule::unique('tasks', 'title')
+                ->where(fn($query) => $query->where('project_id', $request->project_id)),
+        ];
+        $err = $this->validate($data, $validateRules2);
         if ($err) return $err;
         Task::create($data);
         return $this->ok('Task created successfully');
@@ -91,7 +98,9 @@ class TaskController extends Controller
             'required',
             'string',
             'max:200',
-            Rule::unique('tasks', 'title')->ignore($id),
+            Rule::unique('tasks', 'title')
+                ->where(fn($query) => $query->where('project_id', $request->project_id))
+                ->ignore($id),
         ];
         $err = $this->validate($data, $validateRules2);
         if ($err) return $err;

@@ -39,25 +39,15 @@ foreach ($attributes->all() as $__key => $__value) {
 }
 
 unset($__defined_vars, $__key, $__value); ?>
-<?php
 
-/*
-            "p" => "Pending",
-            "s" => "Started",
-            "c" => "Completed",
-            "f" => "Failed",
-            "a" => "Abandoned",
-*/
-?>
-
-<?php if (! $__env->hasRenderedOnce('ba8da8c5-0ef6-42e7-ab2f-93493d5c5837')): $__env->markAsRenderedOnce('ba8da8c5-0ef6-42e7-ab2f-93493d5c5837'); ?>
+<?php if (! $__env->hasRenderedOnce('0f25b362-30ee-46ad-94fa-aeed9521463d')): $__env->markAsRenderedOnce('0f25b362-30ee-46ad-94fa-aeed9521463d'); ?>
 <?php $__env->startPush('styles'); ?>
 <style>
-.cls-p { border-color:gray !important;  }
-.cls-s { border-color:green !important;  }
-.cls-c { border-color:black !important;  }
-.cls-f { border-color:red !important;  }
-.cls-a, .cls-a * { text-decoration: line-through;  }
+.cls-p { background-color:#fbfbfb !important;  }
+.cls-s { background-color: rgb(244,255,244) !important;  }
+.cls-c .text-status { color:green !important;  }
+.cls-f .text-status { color:red !important;  }
+.cls-a .text-status,.cls-a * { text-decoration: line-through;  }
 </style>
 <?php $__env->stopPush(); ?>
 <?php endif; ?>
@@ -68,26 +58,24 @@ unset($__defined_vars, $__key, $__value); ?>
 
     </h5>
     <?php $__currentLoopData = $data; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $job): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-    <div class="card w-100">
+    <div class="card w-100 mb-2">
     <div class="card-body cls-<?php echo e($job['status']); ?>">
         <h5 class="card-title"><?php echo e($job["title"]); ?></h5>
         <h6 class="card-subtitle mb-2 text-body-secondary"><?php echo e($job->project->name); ?></h6>
         <p class="card-text"><?php echo e($job["description"]); ?></p>
     <?php switch($job["status"]):
         case ("p" /*PENDING*/ ): ?> 
-        <button class="btn btn-sm btn-primary" onclick="setStat(<?php echo e($job['id']); ?>,'s')">Start</button>
+        <button class="btn btn-sm btn-primary" onclick="setTaskStat(<?php echo e($job['id']); ?>,'s')">Start</button>
         <?php break; ?>
         <?php case ("s" /*STARTED*/ ): ?> 
-        <button class="btn btn-sm btn-primary" onclick="setStat(<?php echo e($job['id']); ?>,'s')">Start</button>
+        <button class="btn btn-sm btn-primary" onclick="setTaskStat(<?php echo e($job['id']); ?>,'c')">Completed</button>
+        <button class="btn btn-sm btn-primary" onclick="setTaskStat(<?php echo e($job['id']); ?>,'f')">Failed</button>
+        <button class="btn btn-sm btn-primary" onclick="setTaskStat(<?php echo e($job['id']); ?>,'a')">Abandoned</button>
         <?php break; ?>
         <?php case ("c" /*COMPLETED*/ ): ?> 
-        <button class="btn btn-sm btn-primary" onclick="setStat(<?php echo e($job['id']); ?>,'s')">Start</button>
-        <?php break; ?>
         <?php case ("f" /*FAILED*/ ): ?> 
-        <button class="btn btn-sm btn-primary" onclick="setStat(<?php echo e($job['id']); ?>,'s')">Start</button>
-        <?php break; ?>
         <?php case ("a" /*ABANDONED*/ ): ?> 
-        <button class="btn btn-sm btn-primary" onclick="setStat(<?php echo e($job['id']); ?>,'s')">Start</button>
+        <div class="text-status"><?php echo e(taskStatDict()[$job["status"]] ?? "-"); ?></div>
         <?php break; ?>
     <?php endswitch; ?>
     </div>
@@ -95,4 +83,15 @@ unset($__defined_vars, $__key, $__value); ?>
     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
 </div>
-<?php /**PATH D:\wamp64\www\pms2\resources\views/components/jobs.blade.php ENDPATH**/ ?>
+
+<?php if (! $__env->hasRenderedOnce('af8151cd-fa2b-497a-92a7-3b980dca14a8')): $__env->markAsRenderedOnce('af8151cd-fa2b-497a-92a7-3b980dca14a8'); ?>
+<?php $__env->startPush('scripts'); ?>
+<script>
+function setTaskStat(tid,stat) {
+    webserv("POST",`jobs/${tid}`, { stat }, function (d) {
+        window.location.reload();
+    });  
+}
+</script>
+<?php $__env->stopPush(); ?>
+<?php endif; ?><?php /**PATH D:\wamp64\www\pms2\resources\views/components/jobs.blade.php ENDPATH**/ ?>

@@ -17,6 +17,7 @@
 	
 	<link rel="stylesheet" href=<?php echo e(asset("resources/css/style.css")); ?>>
     <?php echo $__env->yieldContent('styles'); ?> 
+    <?php echo $__env->yieldPushContent('styles'); ?> 
 </head>
 	
 <body onload="myLoad();">

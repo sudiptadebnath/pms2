@@ -12,17 +12,20 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('tasks', function (Blueprint $table) {
+            $table->id();
             $table->foreignId('project_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('title', 200)->unique();
+            $table->string('title', 200);
             $table->text('description')->nullable();
             $table->char('status', 1)->default('p');
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
             $table->decimal('target_hour', 8, 2);
             $table->decimal('used_hour', 8, 2)->default(0.0);
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->useCurrent();
+            $table->timestamps();
+
+            // Composite unique index
+            $table->unique(['project_id', 'title']);
         });
     }
 
