@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
 abstract class Controller
@@ -34,5 +36,29 @@ abstract class Controller
         }
 
         return false;
+    }
+
+    protected function setUser($user)
+    {
+        Session::put('user', [
+            'id' => $user->id,
+            'uid' => $user->uid,
+            'email' => $user->email,
+            'role' => $user->role
+        ]);
+    }
+    protected function getUser()
+    {
+        return Session::get('user', []);
+    }
+    protected function getUserObj()
+    {
+        $user = Session::get('user');
+
+        if ($user && isset($user['id'])) {
+            return User::find($user['id']);
+        }
+
+        return null;
     }
 }

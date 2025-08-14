@@ -6,11 +6,11 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Session;
 use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends Controller
 {
+
     public function data(Request $request)
     {
         $query = User::select(['id', 'uid', 'email', 'role', 'stat', 'created_at', 'logged_at'])
@@ -58,12 +58,7 @@ class UserController extends Controller
             }
             $user->logged_at = now();
             $user->save();
-            Session::put('user', [
-                'id' => $user->id,
-                'uid' => $user->uid,
-                'email' => $user->email,
-                'role' => $user->role
-            ]);
+            $this->setUser($user);
             return $this->ok('Login Successfull');
         }
         return $this->err("Invalid Login Attempt");
@@ -104,12 +99,7 @@ class UserController extends Controller
 
         // Auto login only if self-registered
         if (! $isAdminAdd) {
-            Session::put('user', [
-                'id' => $user->id,
-                'uid' => $user->uid,
-                'email' => $user->email,
-                'role' => $user->role
-            ]);
+            $this->setUser($user);
         }
 
         return $this->ok($isAdminAdd ? 'User Saved Successfully' : 'Registration Successful');

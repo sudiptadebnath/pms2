@@ -5,16 +5,28 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Task;
-use App\Models\Project;
 
 class JobController extends Controller
 {
     public function index()
     {
-        $projects = Project::orderBy('name')->pluck("name", "id");
-        $jobsP = Task::with("project")->where("status", "p")->orderBy('updated_at', 'desc')->get();
-        $jobsS = Task::with("project")->where("status", "s")->orderBy('updated_at', 'desc')->get();
-        $jobsC = Task::with("project")->whereNotIn('status', ['p', 's'])->orderBy('updated_at', 'desc')->get();
+        $user = $this->getUserObj();
+        $projects = $user->projects()->orderBy('name')->pluck('name', 'projects.id');
+        $jobsP = Task::with("project")
+            ->where("user_id", $user->id)
+            ->where("status", "p")
+            ->orderBy('updated_at', 'desc')
+            ->get();
+        $jobsS = Task::with("project")
+            ->where("user_id", $user->id)
+            ->where("status", "s")
+            ->orderBy('updated_at', 'desc')
+            ->get();
+        $jobsC = Task::with("project")
+            ->where("user_id", $user->id)
+            ->whereNotIn('status', ['p', 's'])
+            ->orderBy('updated_at', 'desc')
+            ->get();
         return view('user.jobs', compact('projects', 'jobsP', 'jobsS', 'jobsC'));
     }
 

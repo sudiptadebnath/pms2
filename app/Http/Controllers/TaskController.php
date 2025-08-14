@@ -26,7 +26,10 @@ class TaskController extends Controller
 
     public function index()
     {
-        $projects = Project::orderBy('name')->pluck("name", "id");
+        $user = $this->getUserObj();
+        $projects = hasRole("sa") ?
+            Project::orderBy('name')->pluck("name", "id") :
+            $user->projects()->orderBy('name')->pluck('name', 'projects.id');
         $users = User::orderBy('uid')->pluck("uid", "id");
         return view('user.tasks', compact('projects', 'users'));
     }

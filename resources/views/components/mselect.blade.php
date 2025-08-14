@@ -5,6 +5,7 @@
     'icon' => 'person',
     'value' => [],
     'multiple' => true,
+    'change' => '',
 ])
 @php
     $multiple = filter_var($multiple, FILTER_VALIDATE_BOOLEAN);
@@ -19,6 +20,7 @@
             @endif
         </span>
         <select name="{{$name}}" id="{{$name}}" class="form-select"@if($multiple) multiple @endif>
+        <option value="">Select {{ ucfirst($title) }}</option>
         @foreach ($value as $key => $label)
             <option value="{{ $key }}">
             {{ str_replace('*', '', $label) }}
@@ -32,7 +34,8 @@
 @push('scripts')
 <script>
 $(document).ready(function () {
-    let $modalParent = $("#{{$name}}").closest(".modal");
+    let $el = $("#{{$name}}");
+    let $modalParent = $el.closest(".modal");
     let options = {
         placeholder: "Select {{ ucfirst($title) }}",
         allowClear: true,
@@ -40,7 +43,12 @@ $(document).ready(function () {
     if ($modalParent.length) {
         options.dropdownParent = $modalParent;
     }
-    $("#{{$name}}").select2(options);
+    $el.select2(options);
+    @if(!empty($change))
+    $el.on('change', function () {
+        {{$change}}($(this).val());
+    });
+    @endif
 });
 </script>
 @endpush

@@ -15,10 +15,10 @@
 
 @section('content')
 <div class="container vw-100 mb-3">
-    <h3 class="d-flex border-1 border-bottom pb-2">
-        Jobs 
-        <x-mselect size="6" icon="" name="project_id" title="Choose Project" :value="$projects" multiple=false />
-    </h3>
+    <div class="d-flex justify-content-between border-1 border-bottom pb-2">
+        <h3>Jobs</h3> 
+        <x-mselect size="6" icon="" name="project_id" title="Project" :value="$projects" multiple=false change="onProjChange" />
+    </div>
 </div>
 <div class="container">
 <div class="row">
@@ -29,3 +29,10 @@
 </div>
 @endsection
 
+@section("scripts")
+<script>
+function onProjChange(vl) {
+    alert("under dev "+vl);
+}
+</script>
+@endsection

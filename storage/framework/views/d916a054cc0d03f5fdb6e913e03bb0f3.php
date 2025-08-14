@@ -8,6 +8,7 @@ $__propNames = \Illuminate\View\ComponentAttributeBag::extractPropNames(([
     'icon' => 'person',
     'value' => [],
     'multiple' => true,
+    'change' => '',
 ]));
 
 foreach ($attributes->all() as $__key => $__value) {
@@ -30,6 +31,7 @@ foreach (array_filter(([
     'icon' => 'person',
     'value' => [],
     'multiple' => true,
+    'change' => '',
 ]), 'is_string', ARRAY_FILTER_USE_KEY) as $__key => $__value) {
     $$__key = $$__key ?? $__value;
 }
@@ -55,6 +57,7 @@ unset($__defined_vars, $__key, $__value); ?>
             <?php endif; ?>
         </span>
         <select name="<?php echo e($name); ?>" id="<?php echo e($name); ?>" class="form-select"<?php if($multiple): ?> multiple <?php endif; ?>>
+        <option value="">Select <?php echo e(ucfirst($title)); ?></option>
         <?php $__currentLoopData = $value; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $label): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <option value="<?php echo e($key); ?>">
             <?php echo e(str_replace('*', '', $label)); ?>
@@ -69,7 +72,8 @@ unset($__defined_vars, $__key, $__value); ?>
 <?php $__env->startPush('scripts'); ?>
 <script>
 $(document).ready(function () {
-    let $modalParent = $("#<?php echo e($name); ?>").closest(".modal");
+    let $el = $("#<?php echo e($name); ?>");
+    let $modalParent = $el.closest(".modal");
     let options = {
         placeholder: "Select <?php echo e(ucfirst($title)); ?>",
         allowClear: true,
@@ -77,7 +81,12 @@ $(document).ready(function () {
     if ($modalParent.length) {
         options.dropdownParent = $modalParent;
     }
-    $("#<?php echo e($name); ?>").select2(options);
+    $el.select2(options);
+    <?php if(!empty($change)): ?>
+    $el.on('change', function () {
+        <?php echo e($change); ?>($(this).val());
+    });
+    <?php endif; ?>
 });
 </script>
 <?php $__env->stopPush(); ?><?php /**PATH D:\wamp64\www\pms2\resources\views/components/mselect.blade.php ENDPATH**/ ?>
