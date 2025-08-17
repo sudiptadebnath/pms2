@@ -145,7 +145,8 @@ function xFocus(elm) {
 }
 
 function webserv(typ, api, dt, f1 = null, f2 = null) {
-    if (typeof dt === "string") {
+    let isFormData = (dt instanceof FormData);
+    if (!isFormData && typeof dt === "string") {
         // MEANS FORM NAME
         const formData = {};
         $("#" + dt)
@@ -167,14 +168,13 @@ function webserv(typ, api, dt, f1 = null, f2 = null) {
         dt = formData;
     }
 
-    if (typ != "GET") dt._token = $('meta[name="csrf-token"]').attr("content");
-    if (typ === "PUT") {
+    if (!isFormData && typ != "GET") dt._token = $('meta[name="csrf-token"]').attr("content");
+    if (!isFormData && typ === "PUT") {
         dt._method = "PUT";
         typ = "POST";
     }
     const params = {
         type: typ,
-        contentType: "application/json",
         dataType: "json",
         url: api,
         success: function (data) {
@@ -198,9 +198,15 @@ function webserv(typ, api, dt, f1 = null, f2 = null) {
         },
     };
 
-    // Only attach 'data' if dt is a non-empty object
-    if (dt && Object.keys(dt).length > 0) {
-        params.data = JSON.stringify(dt);
+    if (dt) {
+        if (isFormData) {
+            params.data = dt;
+            params.processData = false;
+            params.contentType = false;
+        } else if (Object.keys(dt).length > 0) {
+            params.data = JSON.stringify(dt);
+            params.contentType = "application/json";
+        }
     }
 
     $.ajax(params);

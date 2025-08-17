@@ -82,11 +82,14 @@ $(document).ready(function () {
         options.dropdownParent = $modalParent;
     }
     $el.select2(options);
-    <?php if(!empty($change)): ?>
     $el.on('change', function () {
+        if ($(this).val() && $(this).find('option[value=""]').length) {
+            $(this).find('option[value=""]').remove();
+        }
+        <?php if(!empty($change)): ?>
         <?php echo e($change); ?>($(this).val());
+        <?php endif; ?>
     });
-    <?php endif; ?>
 });
 </script>
-<?php $__env->stopPush(); ?><?php /**PATH D:\wamp64\www\pms2\resources\views/components/mselect.blade.php ENDPATH**/ ?>
+<?php $__env->stopPush(); ?><?php /**PATH C:\wamp64\www\pms2\resources\views/components/mselect.blade.php ENDPATH**/ ?>

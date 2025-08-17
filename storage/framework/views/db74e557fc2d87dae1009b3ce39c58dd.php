@@ -5,4 +5,4 @@
 	<a href="<?php echo e(env('APP_DEV_URL', '#')); ?>" target="_blank" class="text-decoration-none"><?php echo e(env('APP_DEV', 'altis')); ?> </a>
   </div>
 </footer>
-<?php /**PATH D:\wamp64\www\pms2\resources\views/layouts/partials/footer.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\wamp64\www\pms2\resources\views/layouts/partials/footer.blade.php ENDPATH**/ ?>

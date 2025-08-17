@@ -21,7 +21,7 @@
     $tbldata = [
         [ 'th'=>'Project', 'data'=>'project_id', 'name'=>'project_id' ], 
         [ 'data'=>'title' ], 
-        [ 'data'=>'description' ], 
+        [ 'data'=>'...description' ], 
         [ 'th'=>'User', 'data'=>'user_id', 'name'=>'user_id' ], 
         [ 'data'=>'*status','className'=>'text-center' ], 
         [ 'data'=>'start_date','className'=>'text-center'  ], 
@@ -33,6 +33,7 @@
     ];
 @endphp
 <x-table name="taskTable" title="Tasks" :url="route('tasks.getall')" :data=$tbldata :opts=$opts />
+
 
 <div class="modal fade" id="taskModal" tabindex="-1" aria-labelledby="taskModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -156,9 +157,11 @@ function addTask() {
 function editTask(id) {
     webserv("GET",`tasks/${id}`, {}, function (d) {
         let data = d["data"];
+        $('#project_id').val(data.project_id).trigger('change');
         $('#id').val(data.id);
         $('#title').val(data.title);
         $('#description').val(data.description);
+        $('#target_hour').val(data.target_hour);
         loadUsers($('#project_id').val(),data.user_id);
         $('#taskModalLabel').text('Edit Task');
         $('#taskModal').modal('show');

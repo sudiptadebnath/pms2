@@ -46,12 +46,33 @@
 	<div class="d-flex flex-grow-1">
 	
 <?php if(userLogged()): ?>
-	  <nav class="sidebar-wrapper overflow-auto h-100 bg-light border-end p-3 d-none d-sm-block">
-		<?php echo $__env->make('layouts.partials.menu', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
-	  </nav>
+	<?php if (isset($component)) { $__componentOriginald04b9949d0dada8faa8863322f9b06a8 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginald04b9949d0dada8faa8863322f9b06a8 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.comments','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('comments'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginald04b9949d0dada8faa8863322f9b06a8)): ?>
+<?php $attributes = $__attributesOriginald04b9949d0dada8faa8863322f9b06a8; ?>
+<?php unset($__attributesOriginald04b9949d0dada8faa8863322f9b06a8); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginald04b9949d0dada8faa8863322f9b06a8)): ?>
+<?php $component = $__componentOriginald04b9949d0dada8faa8863322f9b06a8; ?>
+<?php unset($__componentOriginald04b9949d0dada8faa8863322f9b06a8); ?>
+<?php endif; ?>
 
-	  <div class="offcanvas offcanvas-start bg-light" tabindex="-1"
-	  id="sidebarOffcanvas" data-bs-backdrop="true" aria-labelledby="sidebarLabel">
+	<nav class="sidebar-wrapper overflow-auto h-100 bg-light border-end p-3 d-none d-sm-block">
+		<?php echo $__env->make('layouts.partials.menu', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+	</nav>
+
+	<div class="offcanvas offcanvas-start bg-light" tabindex="-1"
+	id="sidebarOffcanvas" data-bs-backdrop="true" aria-labelledby="sidebarLabel">
 		<div class="offcanvas-header">
 		  <h5 class="offcanvas-title" id="sidebarLabel"><?php echo e(env('APP_TITLE', 'pms')); ?></h5>
 		  <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -59,7 +80,7 @@
 		<div class="sidebar-wrapper offcanvas-body p-3">
 		    <?php echo $__env->make('layouts.partials.menu', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 		</div>
-	  </div>
+	</div>
 <?php endif; ?>
 
 	  <div class="flex-grow-1 d-flex flex-column">
@@ -125,4 +146,4 @@
 </body>
 </html>
 
-<?php /**PATH D:\wamp64\www\pms2\resources\views/layouts/app.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\wamp64\www\pms2\resources\views/layouts/app.blade.php ENDPATH**/ ?>

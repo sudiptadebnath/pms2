@@ -3,9 +3,9 @@
 $__newAttributes = [];
 $__propNames = \Illuminate\View\ComponentAttributeBag::extractPropNames(([
     'size' => 12,
-    'name' => 'txt',
-    'title' => 'Enter content',
-    'icon' => 'info-circle',
+    'name' => 'password',
+    'title' => 'password',
+    'icon' => 'key',
     'value' => '',
     'required' => false,
 ]));
@@ -25,9 +25,9 @@ unset($__newAttributes);
 
 foreach (array_filter(([
     'size' => 12,
-    'name' => 'txt',
-    'title' => 'Enter content',
-    'icon' => 'info-circle',
+    'name' => 'password',
+    'title' => 'password',
+    'icon' => 'key',
     'value' => '',
     'required' => false,
 ]), 'is_string', ARRAY_FILTER_USE_KEY) as $__key => $__value) {
@@ -49,21 +49,43 @@ unset($__defined_vars, $__key, $__value); ?>
     <div class="input-group">
         <span class="input-group-text">
             <?php if(!empty($icon)): ?>
-            <i class="bi bi-<?php echo e($icon); ?>"></i>
+                <i class="bi bi-<?php echo e($icon); ?>"></i>
             <?php else: ?>
-            <?php echo e(ucfirst($title)); ?>
+                <?php echo e(ucfirst($title)); ?>
 
             <?php endif; ?>
         </span>
-        <input type="text"
+        <input type="password"
             id="<?php echo e($name); ?>"
             name="<?php echo e($name); ?>"
             value="<?php echo e(old($name, $value)); ?>"
             class="form-control"
-            placeholder="<?php echo e(ucfirst($title)); ?>"
+            placeholder="<?php echo e($title); ?>"
             title="<?php echo e(ucfirst($title)); ?>"
+            autocomplete='off'
             <?php if($required): ?> required <?php endif; ?>>
+        <button type="button" class="btn btn-outline-secondary toggle-password" 
+        onclick="togglePass('<?php echo e($name); ?>', this)">
+            <i class="bi bi-eye"></i>
+        </button>
     </div>
     <label class="error" for="<?php echo e($name); ?>"></label>
 </div>
-<?php /**PATH D:\wamp64\www\pms2\resources\views/components/text.blade.php ENDPATH**/ ?>
+
+<?php if (! $__env->hasRenderedOnce('95ac580a-77c4-4e89-b206-9c10b3d4e11f')): $__env->markAsRenderedOnce('95ac580a-77c4-4e89-b206-9c10b3d4e11f'); ?>
+<?php $__env->startPush('scripts'); ?>
+    <script>
+    function togglePass(id, btn) {
+        const $input = $('#' + id);
+        const $icon = $(btn).find('i');
+
+        if ($input.length === 0 || $icon.length === 0) return;
+
+        const isPassword = $input.attr('type') === 'password';
+        $input.attr('type', isPassword ? 'text' : 'password');
+        $icon.toggleClass('bi-eye bi-eye-slash');
+    }
+    </script>
+<?php $__env->stopPush(); ?>
+<?php endif; ?>
+<?php /**PATH C:\wamp64\www\pms2\resources\views/components/password.blade.php ENDPATH**/ ?>

@@ -5,29 +5,26 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Task;
+use App\Models\Project;
+use App\Models\User;
 
 class JobController extends Controller
 {
     public function index()
     {
         $user = $this->getUserObj();
-        $projects = $user->projects()->orderBy('name')->pluck('name', 'projects.id');
-        $jobsP = Task::with("project")
-            ->where("user_id", $user->id)
-            ->where("status", "p")
+        $projects = hasRole("sa") ?
+            Project::orderBy('name')->pluck("name", "id") :
+            $user->projects()->orderBy('name')->pluck('name', 'projects.id');
+        $projectIds = $projects->keys();
+        $users = User::whereHas('projects',function($q) use($projectIds) {
+            $q->whereIn('projects.id', $projectIds);
+        })->distinct()->orderBy('uid')->pluck('uid', 'id');
+        $jobs = Task::with("project")
             ->orderBy('updated_at', 'desc')
             ->get();
-        $jobsS = Task::with("project")
-            ->where("user_id", $user->id)
-            ->where("status", "s")
-            ->orderBy('updated_at', 'desc')
-            ->get();
-        $jobsC = Task::with("project")
-            ->where("user_id", $user->id)
-            ->whereNotIn('status', ['p', 's'])
-            ->orderBy('updated_at', 'desc')
-            ->get();
-        return view('user.jobs', compact('projects', 'jobsP', 'jobsS', 'jobsC'));
+        if(!hasRole("sa")) $jobs = $jobs->where("user_id",$user->id);
+        return view('user.jobs', compact('projects', 'users', 'jobs'));
     }
 
     public function update(Request $request, $id)
@@ -44,7 +41,7 @@ class JobController extends Controller
         if ($task->status == "s") $task->start_date = now();
         if (in_array($task->stat, ["c", "f", "a"])) {
             $task->end_date = now();
-            $task->used_hour = 5.63;
+            $task->used_hour = $task->used_hour1;
         }
 
         $task->save();

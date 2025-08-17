@@ -50,10 +50,18 @@ unset($__defined_vars, $__key, $__value); ?>
     }
 
     foreach($data as &$itm) {
-        $st = (strpos($itm["data"], "*") !== false) ? "*" : "";
-        $itm["data"] = str_replace("*","",$itm["data"]);
-        if(!isset($itm["th"])) $itm["th"] = getTH($itm["data"],$st);
-        if(!isset($itm["name"])) $itm["name"] = $itm["data"];
+        $tdt = $itm["data"];
+        $st = "";
+        if(str_starts_with($tdt,"*")) {
+            $st = "*";
+            $tdt= str_replace("*","",$tdt);
+        } elseif (str_starts_with($tdt,"...")) {
+            $st = "...";
+            $tdt= str_replace("...","",$tdt);
+        }
+        $itm["data"]= $tdt;
+        if(!isset($itm["th"])) $itm["th"] = getTH($tdt,$st);
+        if(!isset($itm["name"])) $itm["name"] = $tdt;
     }
 
     $opts = array_merge([
@@ -62,13 +70,15 @@ unset($__defined_vars, $__key, $__value); ?>
         "add"=>"",
         "edit"=>"",
         "delete"=>"",
+        "actions"=>"",
         "imp"=>[],
     ], $opts);
     extract($opts);
-    $act = ($add || $edit || $delete);
+    $act = ($add || $edit || $delete || $actions);
     $efnm = str_replace(" ","_",$title);
     $autoWidth = true;
 ?>
+
 
 <div class="container vw-100 mb-3">
     <h3 class="d-flex border-1 border-bottom pb-2">
@@ -97,7 +107,7 @@ unset($__defined_vars, $__key, $__value); ?>
             <?php
             if(isset($opt["width"])) $autoWidth = false;
             ?>
-                <th><?php echo e(str_replace("*","",$opt["th"])); ?></th>
+                <th><?php echo e(str_replace("*","",str_replace("...","",$opt["th"]))); ?></th>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             <?php if($act): ?>
                 <th>
@@ -182,10 +192,15 @@ $(document).ready(function () {
                 <?php else: ?>
                     <?php echo e($key); ?>: '<?php echo e($val); ?>',
                 <?php endif; ?>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                <?php if(strpos($col["th"], "...") !== false ): ?>
+                    render: function(data, type, row) {
+                        return "<div class='bigtxt'>"+data+"</div>";
+                    },
+                <?php endif; ?>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         },
         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-        <?php if($edit || $delete): ?>
+        <?php if($edit || $delete || $actions): ?>
         {
             data: null, orderable: false, searchable: false,
             className: 'text-center',
@@ -202,7 +217,10 @@ $(document).ready(function () {
                     onclick="<?php echo e($delete); ?>(${row.id})">
                     <i class="text-danger bi bi-trash"></i>
                 </button>
-                <?php endif; ?>`;                    
+                <?php endif; ?>
+                <?php echo str_replace('__', '${row.id}', $actions); ?>
+
+                `;                    
             },
         },
         <?php endif; ?>
@@ -224,4 +242,4 @@ $(document).ready(function () {
 
 </script>
 <?php $__env->stopPush(); ?>
-<?php /**PATH D:\wamp64\www\pms2\resources\views/components/table.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\wamp64\www\pms2\resources\views/components/table.blade.php ENDPATH**/ ?>

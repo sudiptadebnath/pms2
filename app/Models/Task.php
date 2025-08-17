@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 
 class Task extends Model
 {
@@ -35,5 +36,18 @@ class Task extends Model
     public function project()
     {
         return $this->belongsTo(Project::class);
+    }
+
+    public function getUsedHour1Attribute()
+    {
+        if (!is_null($this->used_hour) && $this->used_hour != 0) {
+            return $this->used_hour;
+        }
+        
+        $start = $this->start_date;
+        if (!$start) return 0;
+
+        $end = $this->end_date ?? now();
+        return $start->diffInHours($end);
     }
 }

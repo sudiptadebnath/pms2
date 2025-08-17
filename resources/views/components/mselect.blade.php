@@ -44,11 +44,14 @@ $(document).ready(function () {
         options.dropdownParent = $modalParent;
     }
     $el.select2(options);
-    @if(!empty($change))
     $el.on('change', function () {
+        if ($(this).val() && $(this).find('option[value=""]').length) {
+            $(this).find('option[value=""]').remove();
+        }
+        @if(!empty($change))
         {{$change}}($(this).val());
+        @endif
     });
-    @endif
 });
 </script>
 @endpush

@@ -9,11 +9,11 @@
 @once
 @push('styles')
 <style>
-.cls-p { background-color:#fbfbfb !important;  }
-.cls-s { background-color: rgb(244,255,244) !important;  }
-.cls-c .text-status { color:green !important;  }
-.cls-f .text-status { color:red !important;  }
-.cls-a .text-status,.cls-a * { text-decoration: line-through;  }
+.card.cls-p { background-color:#fbfbfb !important;  }
+.card.cls-s { background-color: rgb(244,255,244) !important;  }
+.card.cls-c .text-status { color:green !important;  }
+.card.cls-f .text-status { color:red !important;  }
+.card.cls-a .text-status,.card.cls-a * { text-decoration: line-through;  }
 </style>
 @endpush
 @endonce
@@ -23,26 +23,54 @@
         {{ $title }}
     </h5>
     @foreach($data as $job)
-    <div class="card w-100 mb-2">
-    <div class="card-body cls-{{ $job['status'] }}">
-        <h5 class="card-title">{{ $job["title"] }}</h5>
-        <h6 class="card-subtitle mb-2 text-body-secondary">{{ $job->project->name }}</h6>
-        <p class="card-text">{{ $job["description"] }}</p>
+    <div class="card w-100 mb-2 proj-{{ $job->project->id }} uid-{{ $job->user_id }}">
+    <div class="card-body p-2 cls-{{ $job['status'] }}">
+        <span class="badge bg-danger text-white position-absolute top-0 end-0 m-0 p-1">
+            @if($job['status']!='p')
+            {{ number_format($job->used_hour1 ?? 0, 1) }} / 
+            {{ number_format($job->target_hour ?? 0, 1) }} H
+            @else
+            {{ number_format($job->target_hour ?? 0, 1) }} H
+            @endif
+        </span>
+        <span class="badge bg-secondary text-white position-absolute start-50"
+            style="top: 0; transform: translate(-50%, -30%);">
+            {{ $job->user->uid ?? "-" }}
+        </span>
+        <div class="d-flex align-items-center flex-wrap">
+            <strong class="me-2">{{ $job["title"] }}</strong> :&nbsp;
+            <small class="text-muted">{{ $job->project->name }}</small>
+        </div>
+        <div class="mb-2 text-wrap bigtxt">
+            {{ $job["description"] }}
+        </div>
+        <div class="d-flex justify-content-between flex-wrap">
+        <button type="button" class="btn btn-link text-primary px-1" title="Comments"
+        onclick="showComment('Comments',{{$job->project->id}},{{ $job->id }},{{ $job->user->id }})">
+            <i class="bi bi-chat-dots"></i>
+        </button>
+        <div>
     @switch($job["status"])
+
         @case("p" /*PENDING*/ ) 
         <button class="btn btn-sm btn-primary" onclick="setTaskStat({{ $job['id'] }},'s')">Start</button>
         @break
+
         @case("s" /*STARTED*/ ) 
         <button class="btn btn-sm btn-primary" onclick="setTaskStat({{ $job['id'] }},'c')">Completed</button>
         <button class="btn btn-sm btn-primary" onclick="setTaskStat({{ $job['id'] }},'f')">Failed</button>
         <button class="btn btn-sm btn-primary" onclick="setTaskStat({{ $job['id'] }},'a')">Abandoned</button>
         @break
+
         @case("c" /*COMPLETED*/ ) 
         @case("f" /*FAILED*/ ) 
         @case("a" /*ABANDONED*/ ) 
         <div class="text-status">{{ taskStatDict()[$job["status"]] ?? "-" }}</div>
         @break
+
     @endswitch
+        </div>
+        </div>
     </div>
     </div>
     @endforeach

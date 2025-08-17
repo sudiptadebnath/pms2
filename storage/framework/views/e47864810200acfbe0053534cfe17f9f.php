@@ -56,4 +56,4 @@
   </li>
 <?php endif; ?>
 
-</ul><?php /**PATH D:\wamp64\www\pms2\resources\views/layouts/partials/menu.blade.php ENDPATH**/ ?>
+</ul><?php /**PATH C:\wamp64\www\pms2\resources\views/layouts/partials/menu.blade.php ENDPATH**/ ?>

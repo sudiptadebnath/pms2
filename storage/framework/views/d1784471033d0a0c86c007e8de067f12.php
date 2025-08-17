@@ -1,5 +1,3 @@
-
-
 <?php $__env->startSection('styles'); ?>
 <style>
 .planned td { color:gray !important; }    
@@ -21,7 +19,7 @@
     $tbldata = [
         [ 'th'=>'Project', 'data'=>'project_id', 'name'=>'project_id' ], 
         [ 'data'=>'title' ], 
-        [ 'data'=>'description' ], 
+        [ 'data'=>'...description' ], 
         [ 'th'=>'User', 'data'=>'user_id', 'name'=>'user_id' ], 
         [ 'data'=>'*status','className'=>'text-center' ], 
         [ 'data'=>'start_date','className'=>'text-center'  ], 
@@ -52,6 +50,7 @@
 <?php $component = $__componentOriginal163c8ba6efb795223894d5ffef5034f5; ?>
 <?php unset($__componentOriginal163c8ba6efb795223894d5ffef5034f5); ?>
 <?php endif; ?>
+
 
 <div class="modal fade" id="taskModal" tabindex="-1" aria-labelledby="taskModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -270,9 +269,11 @@ function addTask() {
 function editTask(id) {
     webserv("GET",`tasks/${id}`, {}, function (d) {
         let data = d["data"];
+        $('#project_id').val(data.project_id).trigger('change');
         $('#id').val(data.id);
         $('#title').val(data.title);
         $('#description').val(data.description);
+        $('#target_hour').val(data.target_hour);
         loadUsers($('#project_id').val(),data.user_id);
         $('#taskModalLabel').text('Edit Task');
         $('#taskModal').modal('show');
@@ -291,4 +292,4 @@ function delTask(id) {
 </script>
 <?php $__env->stopSection(); ?>
 
-<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH D:\wamp64\www\pms2\resources\views/user/tasks.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\wamp64\www\pms2\resources\views/user/tasks.blade.php ENDPATH**/ ?>

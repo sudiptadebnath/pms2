@@ -16,6 +16,12 @@
         "add"=>"addUser",
         "edit"=>"editUser",
         "delete"=>"delUser",
+        "actions"=>'
+            <button type="button" class="btn btn-link text-warning px-1"
+            onclick="showComment(\'Comments\',null,null,__)">
+                <i class="bi bi-chat-dots"></i>
+            </button>
+        ',
     ];
     $tbldata = [
         // [ 'th'=>'ID','data'=>'id','name'=>'id','className'=>'text-end', ], 

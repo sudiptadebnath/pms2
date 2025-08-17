@@ -3,9 +3,9 @@
 $__newAttributes = [];
 $__propNames = \Illuminate\View\ComponentAttributeBag::extractPropNames(([
     'size' => 12,
-    'name' => 'password',
-    'title' => 'password',
-    'icon' => 'key',
+    'name' => 'txt',
+    'title' => 'Enter content',
+    'icon' => 'info-circle',
     'value' => '',
     'required' => false,
 ]));
@@ -25,9 +25,9 @@ unset($__newAttributes);
 
 foreach (array_filter(([
     'size' => 12,
-    'name' => 'password',
-    'title' => 'password',
-    'icon' => 'key',
+    'name' => 'txt',
+    'title' => 'Enter content',
+    'icon' => 'info-circle',
     'value' => '',
     'required' => false,
 ]), 'is_string', ARRAY_FILTER_USE_KEY) as $__key => $__value) {
@@ -55,37 +55,18 @@ unset($__defined_vars, $__key, $__value); ?>
 
             <?php endif; ?>
         </span>
-        <input type="password"
+        <input type="number"
             id="<?php echo e($name); ?>"
             name="<?php echo e($name); ?>"
             value="<?php echo e(old($name, $value)); ?>"
             class="form-control"
-            placeholder="<?php echo e($title); ?>"
+            placeholder="<?php echo e(ucfirst($title)); ?>"
             title="<?php echo e(ucfirst($title)); ?>"
-            autocomplete='off'
+            step="0.01"
+            min="0"
+            pattern="^\d+(\.\d{1,2})?$"
             <?php if($required): ?> required <?php endif; ?>>
-        <button type="button" class="btn btn-outline-secondary toggle-password" 
-        onclick="togglePass('<?php echo e($name); ?>', this)">
-            <i class="bi bi-eye"></i>
-        </button>
     </div>
     <label class="error" for="<?php echo e($name); ?>"></label>
 </div>
-
-<?php if (! $__env->hasRenderedOnce('6f3cfac1-0de1-4dac-a224-415c9051aa5c')): $__env->markAsRenderedOnce('6f3cfac1-0de1-4dac-a224-415c9051aa5c'); ?>
-<?php $__env->startPush('scripts'); ?>
-    <script>
-    function togglePass(id, btn) {
-        const $input = $('#' + id);
-        const $icon = $(btn).find('i');
-
-        if ($input.length === 0 || $icon.length === 0) return;
-
-        const isPassword = $input.attr('type') === 'password';
-        $input.attr('type', isPassword ? 'text' : 'password');
-        $icon.toggleClass('bi-eye bi-eye-slash');
-    }
-    </script>
-<?php $__env->stopPush(); ?>
-<?php endif; ?>
-<?php /**PATH D:\wamp64\www\pms2\resources\views/components/password.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\wamp64\www\pms2\resources\views/components/number.blade.php ENDPATH**/ ?>

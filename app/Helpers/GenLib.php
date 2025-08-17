@@ -9,18 +9,21 @@ if (!function_exists('hasRole')) {
         return $user && isset($user['role']) && str_contains($roles, $user['role']);
     }
 }
+
 if (!function_exists('userLogged')) {
     function userLogged()
     {
         return !empty(session('user'));
     }
 }
+
 if (!function_exists('getUsrProp')) {
     function getUsrProp($ky)
     {
         return (session('user') ?? [])[$ky] ?? "";
     }
 }
+
 if (!function_exists('roleDict')) {
     function roleDict($typ = 0)
     {
@@ -109,3 +112,4 @@ if (!function_exists('dttmsql')) {
         }
     }
 }
+

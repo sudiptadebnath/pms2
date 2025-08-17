@@ -2,12 +2,12 @@
 
 $__newAttributes = [];
 $__propNames = \Illuminate\View\ComponentAttributeBag::extractPropNames(([
-'size' => 12,
-'name' => 'txt',
-'title' => 'Enter content',
-'icon' => 'info-circle',
-'value' => '',
-'required' => false,
+    'size' => 12,
+    'name' => 'txt',
+    'title' => 'Enter content',
+    'icon' => 'info-circle',
+    'value' => '',
+    'required' => false,
 ]));
 
 foreach ($attributes->all() as $__key => $__value) {
@@ -24,12 +24,12 @@ unset($__propNames);
 unset($__newAttributes);
 
 foreach (array_filter(([
-'size' => 12,
-'name' => 'txt',
-'title' => 'Enter content',
-'icon' => 'info-circle',
-'value' => '',
-'required' => false,
+    'size' => 12,
+    'name' => 'txt',
+    'title' => 'Enter content',
+    'icon' => 'info-circle',
+    'value' => '',
+    'required' => false,
 ]), 'is_string', ARRAY_FILTER_USE_KEY) as $__key => $__value) {
     $$__key = $$__key ?? $__value;
 }
@@ -55,14 +55,15 @@ unset($__defined_vars, $__key, $__value); ?>
 
             <?php endif; ?>
         </span>
-        <textarea
+        <input type="text"
             id="<?php echo e($name); ?>"
             name="<?php echo e($name); ?>"
+            value="<?php echo e(old($name, $value)); ?>"
             class="form-control"
             placeholder="<?php echo e(ucfirst($title)); ?>"
             title="<?php echo e(ucfirst($title)); ?>"
-            rows="4"
-            <?php if($required): ?> required <?php endif; ?>><?php echo e(old($name, $value)); ?></textarea>
+            <?php if($required): ?> required <?php endif; ?>>
     </div>
     <label class="error" for="<?php echo e($name); ?>"></label>
-</div><?php /**PATH D:\wamp64\www\pms2\resources\views/components/textarea.blade.php ENDPATH**/ ?>
+</div>
+<?php /**PATH C:\wamp64\www\pms2\resources\views/components/text.blade.php ENDPATH**/ ?>

@@ -19,7 +19,7 @@
     ];
     $tbldata = [
         [ 'data'=>'name',  ], 
-        [ 'data'=>'description', ], 
+        [ 'data'=>'...description', ], 
         [ 'data'=>'users', ], 
         [ 'data'=>'*status','className'=>'text-center', ], 
         [ 'data'=>'start_date','className'=>'text-center', ], 

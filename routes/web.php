@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TaskController;
@@ -7,7 +8,7 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 
-Route::get('/', fn() => view("index"));
+Route::get('/', fn () => view(userLogged() ? "user.dashboard" : "index"));
 Route::get('/register', fn() => view("register"));
 Route::post('/login', [UserController::class, 'login']);
 Route::post('/register', [UserController::class, 'register']);
@@ -50,5 +51,10 @@ Route::middleware('check.user.session')->prefix('user')->group(function () {
     Route::prefix('jobs')->group(function () {
         Route::get('/', [JobController::class, 'index']);
         Route::post('/{id}', [JobController::class, 'update']);
+    });
+
+    Route::prefix('comments')->group(function () {
+        Route::post('/getall', [CommentController::class, 'getall']);
+        Route::post('/add', [CommentController::class, 'add']);
     });
 });

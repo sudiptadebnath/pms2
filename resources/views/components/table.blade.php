@@ -16,10 +16,18 @@
     }
 
     foreach($data as &$itm) {
-        $st = (strpos($itm["data"], "*") !== false) ? "*" : "";
-        $itm["data"] = str_replace("*","",$itm["data"]);
-        if(!isset($itm["th"])) $itm["th"] = getTH($itm["data"],$st);
-        if(!isset($itm["name"])) $itm["name"] = $itm["data"];
+        $tdt = $itm["data"];
+        $st = "";
+        if(str_starts_with($tdt,"*")) {
+            $st = "*";
+            $tdt= str_replace("*","",$tdt);
+        } elseif (str_starts_with($tdt,"...")) {
+            $st = "...";
+            $tdt= str_replace("...","",$tdt);
+        }
+        $itm["data"]= $tdt;
+        if(!isset($itm["th"])) $itm["th"] = getTH($tdt,$st);
+        if(!isset($itm["name"])) $itm["name"] = $tdt;
     }
 
     $opts = array_merge([
@@ -28,13 +36,15 @@
         "add"=>"",
         "edit"=>"",
         "delete"=>"",
+        "actions"=>"",
         "imp"=>[],
     ], $opts);
     extract($opts);
-    $act = ($add || $edit || $delete);
+    $act = ($add || $edit || $delete || $actions);
     $efnm = str_replace(" ","_",$title);
     $autoWidth = true;
 @endphp
+
 
 <div class="container vw-100 mb-3">
     <h3 class="d-flex border-1 border-bottom pb-2">
@@ -62,7 +72,7 @@
             @php
             if(isset($opt["width"])) $autoWidth = false;
             @endphp
-                <th>{{ str_replace("*","",$opt["th"]) }}</th>
+                <th>{{ str_replace("*","",str_replace("...","",$opt["th"])) }}</th>
             @endforeach
             @if($act)
                 <th>
@@ -147,10 +157,15 @@ $(document).ready(function () {
                 @else
                     {{ $key }}: '{{ $val }}',
                 @endif
-            @endforeach
+                @if(strpos($col["th"], "...") !== false )
+                    render: function(data, type, row) {
+                        return "<div class='bigtxt'>"+data+"</div>";
+                    },
+                @endif
+        @endforeach
         },
         @endforeach
-        @if ($edit || $delete)
+        @if ($edit || $delete || $actions)
         {
             data: null, orderable: false, searchable: false,
             className: 'text-center',
@@ -167,7 +182,9 @@ $(document).ready(function () {
                     onclick="{{ $delete }}(${row.id})">
                     <i class="text-danger bi bi-trash"></i>
                 </button>
-                @endif`;                    
+                @endif
+                {!! str_replace('__', '${row.id}', $actions) !!}
+                `;                    
             },
         },
         @endif

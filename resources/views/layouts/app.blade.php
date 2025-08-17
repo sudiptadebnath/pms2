@@ -46,12 +46,14 @@
 	<div class="d-flex flex-grow-1">
 	
 @if (userLogged())
-	  <nav class="sidebar-wrapper overflow-auto h-100 bg-light border-end p-3 d-none d-sm-block">
-		@include('layouts.partials.menu')
-	  </nav>
+	<x-comments />
 
-	  <div class="offcanvas offcanvas-start bg-light" tabindex="-1"
-	  id="sidebarOffcanvas" data-bs-backdrop="true" aria-labelledby="sidebarLabel">
+	<nav class="sidebar-wrapper overflow-auto h-100 bg-light border-end p-3 d-none d-sm-block">
+		@include('layouts.partials.menu')
+	</nav>
+
+	<div class="offcanvas offcanvas-start bg-light" tabindex="-1"
+	id="sidebarOffcanvas" data-bs-backdrop="true" aria-labelledby="sidebarLabel">
 		<div class="offcanvas-header">
 		  <h5 class="offcanvas-title" id="sidebarLabel">{{ env('APP_TITLE', 'pms') }}</h5>
 		  <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -59,7 +61,7 @@
 		<div class="sidebar-wrapper offcanvas-body p-3">
 		    @include('layouts.partials.menu')
 		</div>
-	  </div>
+	</div>
 @endif
 
 	  <div class="flex-grow-1 d-flex flex-column">

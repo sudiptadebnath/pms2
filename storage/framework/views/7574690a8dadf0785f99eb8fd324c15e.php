@@ -1,4 +1,8 @@
-
+<?php
+$jobsP = $jobs->where('status', 'p');
+$jobsS = $jobs->where('status', 's');
+$jobsC = $jobs->whereNotIn('status', ['p', 's']);
+?>
 
 <?php $__env->startSection('styles'); ?>
 <style>
@@ -14,19 +18,19 @@
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('content'); ?>
-<div class="container vw-100 mb-3">
-    <div class="d-flex justify-content-between border-1 border-bottom pb-2">
-        <h3>Jobs</h3> 
+<div class="container mb-3">
+    <div class="d-flex flex-wrap gap-2 justify-content-between border-1 border-bottom pb-2">
+        <h3 class="col-md-1">Jobs</h3> 
         <?php if (isset($component)) { $__componentOriginal20bb1f77d056b8fba1ac560ae63e55c3 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal20bb1f77d056b8fba1ac560ae63e55c3 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.mselect','data' => ['size' => '6','icon' => '','name' => 'project_id','title' => 'Project','value' => $projects,'multiple' => 'false','change' => 'onProjChange']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.mselect','data' => ['size' => '5','icon' => '','name' => 'project_id','title' => 'Project','value' => $projects,'multiple' => 'false','change' => 'filterCards']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('mselect'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
 <?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['size' => '6','icon' => '','name' => 'project_id','title' => 'Project','value' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($projects),'multiple' => 'false','change' => 'onProjChange']); ?>
+<?php $component->withAttributes(['size' => '5','icon' => '','name' => 'project_id','title' => 'Project','value' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($projects),'multiple' => 'false','change' => 'filterCards']); ?>
 <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginal20bb1f77d056b8fba1ac560ae63e55c3)): ?>
@@ -37,6 +41,28 @@
 <?php $component = $__componentOriginal20bb1f77d056b8fba1ac560ae63e55c3; ?>
 <?php unset($__componentOriginal20bb1f77d056b8fba1ac560ae63e55c3); ?>
 <?php endif; ?>
+        <?php if(hasRole("sam")): ?> 
+        <?php if (isset($component)) { $__componentOriginal20bb1f77d056b8fba1ac560ae63e55c3 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal20bb1f77d056b8fba1ac560ae63e55c3 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.mselect','data' => ['size' => '5','icon' => '','name' => 'user_id','title' => 'User','value' => $users,'multiple' => 'false','change' => 'filterCards']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('mselect'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['size' => '5','icon' => '','name' => 'user_id','title' => 'User','value' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($users),'multiple' => 'false','change' => 'filterCards']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal20bb1f77d056b8fba1ac560ae63e55c3)): ?>
+<?php $attributes = $__attributesOriginal20bb1f77d056b8fba1ac560ae63e55c3; ?>
+<?php unset($__attributesOriginal20bb1f77d056b8fba1ac560ae63e55c3); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal20bb1f77d056b8fba1ac560ae63e55c3)): ?>
+<?php $component = $__componentOriginal20bb1f77d056b8fba1ac560ae63e55c3; ?>
+<?php unset($__componentOriginal20bb1f77d056b8fba1ac560ae63e55c3); ?>
+<?php endif; ?>
+        <?php endif; ?>
     </div>
 </div>
 <div class="container">
@@ -107,10 +133,17 @@
 
 <?php $__env->startSection("scripts"); ?>
 <script>
-function onProjChange(vl) {
-    alert("under dev "+vl);
+function filterCards() {
+    let proj = $('[name="project_id"]').val();
+    let user = $('[name="user_id"]').val();
+
+    $(".card").hide().filter(function () {
+        let matchProj = !proj || $(this).hasClass("proj-" + proj);
+        let matchUser = !user || $(this).hasClass("uid-" + user);
+        return matchProj && matchUser;
+    }).show();
 }
 </script>
 <?php $__env->stopSection(); ?>
 
-<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH D:\wamp64\www\pms2\resources\views/user/jobs.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\wamp64\www\pms2\resources\views/user/jobs.blade.php ENDPATH**/ ?>

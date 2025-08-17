@@ -46,8 +46,8 @@ class TaskController extends Controller
                 $task->status : (taskStatDict()[$task->status] ?? $task->status),
             'start_date' => optional($task->start_date)->format('d-m-Y'),
             'end_date' => optional($task->end_date)->format('d-m-Y'),
-            'target_hour' => $task->target_hour ?? 0,
-            'used_hour' => $task->used_hour ?? 0,
+            'target_hour' => number_format($task->target_hour ?? 0, 2),
+            'used_hour' => number_format($task->used_hour1 ?? 0, 2),
             'created_at' => optional($task->created_at)->format('d-m-Y H:i:s'),
             'updated_at' => optional($task->updated_at)->format('d-m-Y H:i:s'),
         ];
@@ -55,7 +55,6 @@ class TaskController extends Controller
 
     public function getall(Request $request)
     {
-        Log::info("Task getall");
         $tasks = Task::with('project')->with('user')
             ->orderBy('updated_at', 'desc')
             ->get()

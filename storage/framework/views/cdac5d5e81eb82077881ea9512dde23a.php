@@ -1,4 +1,3 @@
-
 <?php $__env->startSection('styles'); ?>
 <style>
 .active td { color:black !important; }    
@@ -16,6 +15,12 @@
         "add"=>"addUser",
         "edit"=>"editUser",
         "delete"=>"delUser",
+        "actions"=>'
+            <button type="button" class="btn btn-link text-warning px-1"
+            onclick="showComment(\'Comments\',null,null,__)">
+                <i class="bi bi-chat-dots"></i>
+            </button>
+        ',
     ];
     $tbldata = [
         // [ 'th'=>'ID','data'=>'id','name'=>'id','className'=>'text-end', ], 
@@ -312,4 +317,4 @@ function delUser(id) {
 </script>
 <?php $__env->stopSection(); ?>
 
-<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH D:\wamp64\www\pms2\resources\views/user/users.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\wamp64\www\pms2\resources\views/user/users.blade.php ENDPATH**/ ?>

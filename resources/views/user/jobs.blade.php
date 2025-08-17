@@ -1,5 +1,11 @@
 @extends('layouts.app')
 
+@php
+$jobsP = $jobs->where('status', 'p');
+$jobsS = $jobs->where('status', 's');
+$jobsC = $jobs->whereNotIn('status', ['p', 's']);
+@endphp
+
 @section('styles')
 <style>
 .row > [class*='col-'] {
@@ -14,10 +20,13 @@
 @endsection
 
 @section('content')
-<div class="container vw-100 mb-3">
-    <div class="d-flex justify-content-between border-1 border-bottom pb-2">
-        <h3>Jobs</h3> 
-        <x-mselect size="6" icon="" name="project_id" title="Project" :value="$projects" multiple=false change="onProjChange" />
+<div class="container mb-3">
+    <div class="d-flex flex-wrap gap-2 justify-content-between border-1 border-bottom pb-2">
+        <h3 class="col-md-1">Jobs</h3> 
+        <x-mselect size="5" icon="" name="project_id" title="Project" :value="$projects" multiple=false change="filterCards" />
+        @if(hasRole("sam")) 
+        <x-mselect size="5" icon="" name="user_id" title="User" :value="$users" multiple=false change="filterCards" />
+        @endif
     </div>
 </div>
 <div class="container">
@@ -31,8 +40,15 @@
 
 @section("scripts")
 <script>
-function onProjChange(vl) {
-    alert("under dev "+vl);
+function filterCards() {
+    let proj = $('[name="project_id"]').val();
+    let user = $('[name="user_id"]').val();
+
+    $(".card").hide().filter(function () {
+        let matchProj = !proj || $(this).hasClass("proj-" + proj);
+        let matchUser = !user || $(this).hasClass("uid-" + user);
+        return matchProj && matchUser;
+    }).show();
 }
 </script>
 @endsection
