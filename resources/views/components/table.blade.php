@@ -31,6 +31,7 @@
     }
 
     $opts = array_merge([
+        "rowreorder"=>[],
         "responsive"=>false,
         "style"=>"primary",
         "add"=>"",
@@ -119,6 +120,11 @@ $(document).ready(function () {
     var {{ $name }} = $('#{{ $name }}').DataTable({
         autoWidth: {{ $autoWidth ? 'true' : 'false' }},
         order: [],
+    @if($rowreorder)
+        rowReorder: {
+            dataSrc: '{{ $rowreorder[0] }}'
+        },
+    @endif
     @if($responsive)
         responsive: true,
     @else
@@ -201,6 +207,25 @@ $(document).ready(function () {
     window.addEventListener('resize', function () {
         $('#{{ $name }}').DataTable().columns.adjust().responsive.recalc();
     });
+
+    @if($rowreorder)
+    {{ $name }}.on('row-reorder', function (e, diff, edit) {
+        let order = [];
+        for (let i = 0; i < diff.length; i++) {
+            order.push({
+                id: {{ $name }}.row(diff[i].node).data().id,
+                position: diff[i].newPosition 
+            });
+        }
+        $.ajax({
+            url: '{{ $rowreorder[1] }}',
+            method: 'POST',
+            data: { order: order, _token: '{{ csrf_token() }}' }
+        });
+    });
+    @endif
+
+
 });
 
 

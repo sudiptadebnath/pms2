@@ -47,7 +47,7 @@ class ProjectController extends Controller
     {
         $projects = Project::orderBy('created_at', 'desc')->get()->map(fn($p) => $this->mapObj($p));
         return DataTables::of($projects)
-            ->rawColumns(['users']) // prevent escaping
+            ->rawColumns(['users', 'description']) // prevent escaping
             ->make(true);
     }
 

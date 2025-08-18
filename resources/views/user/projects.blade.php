@@ -44,7 +44,7 @@
             <x-select icon="check" name="status" title="status" :value="projStatDict()" />
             <x-datetime size="6" name="start_date" title="Start Date" required=false />
             <x-datetime size="6" name="end_date" title="End Date" required=false />
-            <x-textarea icon="journal-text" name="description" title="Description" required=true />
+            <x-richtext name="description" title="Description" required=true />
             <x-mselect icon="people" name="users" title="users" :value="$users" />
         </div>
         </div>
@@ -126,6 +126,7 @@ $(document).ready(function () {
 function addProject() {
     $('#projectForm')[0].reset();
     $('#id').val(''); 
+    $('#description').summernote('code', "");
     $('#users').val(null).trigger('change');
     $('#projectModalLabel').text("Add Project");
     $('.error').text('');
@@ -137,7 +138,7 @@ function editProject(id) {
         let data = d["data"];
         $('#id').val(data.id);
         $('#name').val(data.name);
-        $('#description').val(data.description);
+        $('#description').summernote('code', data.description ?? "");
         $('#status').val(data.status);
         $('#start_date').val(data.start_date);
         $('#end_date').val(data.end_date);

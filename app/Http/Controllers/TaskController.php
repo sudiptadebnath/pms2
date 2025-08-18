@@ -20,7 +20,7 @@ class TaskController extends Controller
         'status' => 'nullable',
         'start_date' => 'nullable|date',
         'end_date' => 'nullable|date|after_or_equal:start_date',
-        'target_hour'  => 'nullable|numeric|min:0',
+        'target_hour'  => 'nullable|numeric|min:1',
         'used_hour'    => 'nullable|numeric|min:0',
     ];
 
@@ -28,7 +28,7 @@ class TaskController extends Controller
     {
         $user = $this->getUserObj();
         $projects = hasRole("sa") ?
-            Project::orderBy('name')->pluck("name", "id") :
+            Project::where('status', 'a')->orderBy('name')->pluck("name", "id") :
             $user->projects()->orderBy('name')->pluck('name', 'projects.id');
         $users = User::orderBy('uid')->pluck("uid", "id");
         return view('user.tasks', compact('projects', 'users'));
@@ -50,17 +50,21 @@ class TaskController extends Controller
             'used_hour' => number_format($task->used_hour1 ?? 0, 2),
             'created_at' => optional($task->created_at)->format('d-m-Y H:i:s'),
             'updated_at' => optional($task->updated_at)->format('d-m-Y H:i:s'),
+            'sort_order' => $task->sort_order,
         ];
     }
 
     public function getall(Request $request)
     {
         $tasks = Task::with('project')->with('user')
-            ->orderBy('updated_at', 'desc')
+            ->orderBy('sort_order')
+            ->orderBy('updated_at')
             ->get()
             ->map(fn($j) => $this->mapObj($j));
 
-        return DataTables::of($tasks)->make(true);
+        return DataTables::of($tasks)
+            ->rawColumns(['description']) // prevent escaping
+            ->make(true);
     }
 
     public function get($id)
@@ -120,5 +124,15 @@ class TaskController extends Controller
         }
         $task->delete();
         return $this->ok('Task deleted successfully');
+    }
+
+    public function updateOrder(Request $request)
+    {
+        // Log::info("updateOrder", $request->order);
+        foreach ($request->order as $item) {
+            Task::where('id', $item['id'])
+                ->update(['sort_order' => $item['position']]);
+        }
+        return $this->ok('Task ordered successfully');
     }
 }

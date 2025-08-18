@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ env('APP_TITLE', 'pms') }}</title>
-	<link rel="icon" type="image/x-icon" href={{ asset("resources/img/favicon.ico") }}>
+	<meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
+    <title><?php echo e(env('APP_TITLE', 'pms')); ?></title>
+	<link rel="icon" type="image/x-icon" href=<?php echo e(asset("resources/img/favicon.ico")); ?>>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
@@ -15,9 +15,9 @@
 
 	<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 	
-	<link rel="stylesheet" href={{ asset("resources/css/style.css") }}>
-    @yield('styles') 
-    @stack('styles') 
+	<link rel="stylesheet" href=<?php echo e(asset("resources/css/style.css")); ?>>
+    <?php echo $__env->yieldContent('styles'); ?> 
+    <?php echo $__env->yieldPushContent('styles'); ?> 
 </head>
 	
 <body onload="myLoad();">
@@ -39,36 +39,55 @@
 	  </div>
 	</div>
 	
-    @include('layouts.partials.topbar')
+    <?php echo $__env->make('layouts.partials.topbar', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 
 
 	<!-- ============================ MAIN LAYOUT ==================================== -->
 	<div class="d-flex flex-grow-1">
 	
-@if (userLogged())
-	<x-comments />
+<?php if(userLogged()): ?>
+	<?php if (isset($component)) { $__componentOriginald04b9949d0dada8faa8863322f9b06a8 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginald04b9949d0dada8faa8863322f9b06a8 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.comments','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('comments'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginald04b9949d0dada8faa8863322f9b06a8)): ?>
+<?php $attributes = $__attributesOriginald04b9949d0dada8faa8863322f9b06a8; ?>
+<?php unset($__attributesOriginald04b9949d0dada8faa8863322f9b06a8); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginald04b9949d0dada8faa8863322f9b06a8)): ?>
+<?php $component = $__componentOriginald04b9949d0dada8faa8863322f9b06a8; ?>
+<?php unset($__componentOriginald04b9949d0dada8faa8863322f9b06a8); ?>
+<?php endif; ?>
 
 	<nav class="sidebar-wrapper overflow-auto h-100 bg-light border-end p-3 d-none d-sm-block">
-		@include('layouts.partials.menu')
+		<?php echo $__env->make('layouts.partials.menu', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 	</nav>
 
 	<div class="offcanvas offcanvas-start bg-light" tabindex="-1"
 	id="sidebarOffcanvas" data-bs-backdrop="true" aria-labelledby="sidebarLabel">
 		<div class="offcanvas-header">
-		  <h5 class="offcanvas-title" id="sidebarLabel">{{ env('APP_TITLE', 'pms') }}</h5>
+		  <h5 class="offcanvas-title" id="sidebarLabel"><?php echo e(env('APP_TITLE', 'pms')); ?></h5>
 		  <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 		</div>
 		<div class="sidebar-wrapper offcanvas-body p-3">
-		    @include('layouts.partials.menu')
+		    <?php echo $__env->make('layouts.partials.menu', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 		</div>
 	</div>
-@endif
+<?php endif; ?>
 
 	  <div class="flex-grow-1 d-flex flex-column">
 		<main class="flex-grow-1 p-0 p-sm-2 bg-white">
-		  @yield('content')
+		  <?php echo $__env->yieldContent('content'); ?>
 		</main>
-		@include('layouts.partials.footer')
+		<?php echo $__env->make('layouts.partials.footer', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 	  </div>
 	</div>
 
@@ -81,9 +100,9 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
-	<script> let appsettings = { dtfmt: @json(dtfmt(1)), dttmfmt: @json(dttmfmt(1)) } </script>
+	<script> let appsettings = { dtfmt: <?php echo json_encode(dtfmt(1), 15, 512) ?>, dttmfmt: <?php echo json_encode(dttmfmt(1), 15, 512) ?> } </script>
 	
-	<script src={{asset("resources/js/scripts.js")}}></script>
+	<script src=<?php echo e(asset("resources/js/scripts.js")); ?>></script>
 
 	<!-- DataTables JS + Bootstrap 5 styling -->
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
@@ -128,9 +147,10 @@
 	<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.css" rel="stylesheet">
 	<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.js"></script>
 
-	@yield("scripts")
-	@stack('scripts')
+	<?php echo $__env->yieldContent("scripts"); ?>
+	<?php echo $__env->yieldPushContent('scripts'); ?>
 	
 </body>
 </html>
 
+<?php /**PATH D:\wamp64\www\pms2\resources\views/layouts/app.blade.php ENDPATH**/ ?>

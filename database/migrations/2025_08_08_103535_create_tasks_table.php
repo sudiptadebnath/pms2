@@ -22,8 +22,8 @@ return new class extends Migration
             $table->date('end_date')->nullable();
             $table->decimal('target_hour', 8, 2);
             $table->decimal('used_hour', 8, 2)->default(0.0);
+            $table->unsignedInteger('sort_order')->default(0)->index();
             $table->timestamps();
-
             // Composite unique index
             $table->unique(['project_id', 'title']);
         });

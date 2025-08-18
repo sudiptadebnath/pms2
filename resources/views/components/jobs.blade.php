@@ -25,13 +25,9 @@
     @foreach($data as $job)
     <div class="card w-100 mb-2 proj-{{ $job->project->id }} uid-{{ $job->user_id }}">
     <div class="card-body p-2 cls-{{ $job['status'] }}">
-        <span class="badge bg-danger text-white position-absolute top-0 end-0 m-0 p-1">
-            @if($job['status']!='p')
+        <span class="badge bg-info text-white position-absolute top-0 end-0 m-0 p-1">
             {{ number_format($job->used_hour1 ?? 0, 1) }} / 
             {{ number_format($job->target_hour ?? 0, 1) }} H
-            @else
-            {{ number_format($job->target_hour ?? 0, 1) }} H
-            @endif
         </span>
         <span class="badge bg-secondary text-white position-absolute start-50"
             style="top: 0; transform: translate(-50%, -30%);">
@@ -57,6 +53,7 @@
         @break
 
         @case("s" /*STARTED*/ ) 
+        <button class="btn btn-sm btn-primary" onclick="setTaskStat({{ $job['id'] }},'p')">Stop</button>
         <button class="btn btn-sm btn-primary" onclick="setTaskStat({{ $job['id'] }},'c')">Completed</button>
         <button class="btn btn-sm btn-primary" onclick="setTaskStat({{ $job['id'] }},'f')">Failed</button>
         <button class="btn btn-sm btn-primary" onclick="setTaskStat({{ $job['id'] }},'a')">Abandoned</button>

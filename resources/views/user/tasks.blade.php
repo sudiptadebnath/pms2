@@ -13,6 +13,7 @@
 @section('content')
 @php
     $opts = [
+        "rowreorder"=>["sort_order",route('tasks.updateOrder')],
         "imp"=>[0,1,2,3,4,5,6,7,8,9,10],
         "add"=>"addTask",
         "edit"=>"editTask",
@@ -29,7 +30,7 @@
         [ 'data'=>'target_hour','className'=>'text-center'  ], 
         [ 'data'=>'used_hour','className'=>'text-center'  ], 
         [ 'data'=>'created_at','className'=>'text-center' ], 
-        [ 'data'=>'updated_at','className'=>'text-center' ], 
+        [ 'data'=>'sort_order','visible'=>false ], 
     ];
 @endphp
 <x-table name="taskTable" title="Tasks" :url="route('tasks.getall')" :data=$tbldata :opts=$opts />
@@ -48,7 +49,7 @@
             <input type="hidden" id="id" name="id" />
             <x-mselect icon="clipboard-data" name="project_id" title="Project" :value="$projects" multiple=false />
             <x-text icon="laptop" name="title" title="Title" required=true />
-            <x-textarea icon="journal-text" name="description" title="Description" />
+            <x-richtext name="description" title="Description" />
             <x-mselect icon="person" name="user_id" title="User" :value="[]" multiple=false />
             <x-number icon="alarm" name="target_hour" title="Target Hour" required=true />
         </div>
@@ -149,6 +150,7 @@ function addTask() {
     $('#id').val(''); 
     loadUsers($('#project_id').val());
     $('#users').val(null).trigger('change');
+    $('#description').summernote('code', "");
     $('#taskModalLabel').text("Add Task");
     $('.error').text('');
     $('#taskModal').modal('show');
@@ -160,7 +162,7 @@ function editTask(id) {
         $('#project_id').val(data.project_id).trigger('change');
         $('#id').val(data.id);
         $('#title').val(data.title);
-        $('#description').val(data.description);
+        $('#description').summernote('code', data.description ?? "");
         $('#target_hour').val(data.target_hour);
         loadUsers($('#project_id').val(),data.user_id);
         $('#taskModalLabel').text('Edit Task');

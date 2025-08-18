@@ -126,7 +126,7 @@ ul.nav.flex-column {
 
 .bigtxt {
     display: -webkit-box;
-    -webkit-line-clamp: 3;       /* limit to 3 lines */
+    -webkit-line-clamp: 3; /* limit to 3 lines */
     -webkit-box-orient: vertical;
     overflow: hidden;
     white-space: normal;
