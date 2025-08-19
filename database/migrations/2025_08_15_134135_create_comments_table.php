@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('project_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('task_id')->nullable()->constrained()->onDelete('cascade');
-            $table->foreignId('frm_user_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('to_user_id')->nullable()->constrained('users')->onDelete('cascade');
+            $table->foreignId('frm_user_id')->constrained('user')->onDelete('cascade');
+            $table->foreignId('to_user_id')->nullable()->constrained('user')->onDelete('cascade');
             $table->text('message');
             $table->string('typ', 3)->default(''); // file extention, for file upload
             $table->timestamp('created_at')->useCurrent(); // Only created_at, no updated_at
