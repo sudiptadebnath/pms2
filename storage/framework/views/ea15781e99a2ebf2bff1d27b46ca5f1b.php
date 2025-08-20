@@ -101,7 +101,7 @@ unset($__defined_vars, $__key, $__value); ?>
         <?php endif; ?>
     </h3>
 
-    <table id="<?php echo e($name); ?>" class="table table-bordered table-hover table-striped w-100">
+    <table id="<?php echo e($name); ?>" class="table slick table-bordered table-hover table-striped w-100">
         <thead class="table-<?php echo e($style); ?>">
             <tr>
             <?php $__currentLoopData = $data; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $opt): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>

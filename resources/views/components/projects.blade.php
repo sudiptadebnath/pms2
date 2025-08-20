@@ -43,6 +43,7 @@
                             @foreach($itm['tasks'] as $tsk)
                                 <li class="list-group-item d-flex justify-content-between align-items-center px-2 py-1">
                                     <span>{{ $tsk['title'] ?? 'Untitled Task' }}</span>
+                                    <span>{{ $tsk['user']['uid'] ?? 'User' }}</span>
                                     <span class="badge bg-{{ ($tsk['status'] ?? '') === 'done' ? 'success' : 'secondary' }}">
                                         {{ ucfirst($tsk['status'] ?? 'pending') }}
                                     </span>

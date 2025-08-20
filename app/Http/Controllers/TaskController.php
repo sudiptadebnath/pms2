@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Task;
-use App\Models\Project;
-use App\Models\User;
 use Illuminate\Validation\Rule;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -63,7 +61,7 @@ class TaskController extends Controller
 
     public function get($id)
     {
-        $task = Task::with('project')->find($id);
+        $task = Task::with('project')->with('user')->find($id);
         if (!$task) {
             return $this->err("No such Task");
         }

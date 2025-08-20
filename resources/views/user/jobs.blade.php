@@ -27,7 +27,7 @@ $jobsC = $jobs->whereNotIn('status', ['p', 's']);
         :url="route('projects.withhrUsr')" multiple=false change="filterCards" />
         @if(hasRole("sam")) 
         <x-mselect size="5" icon="" name="user_id" title="User" 
-        :url="route('users.withhr')" multiple=false change="filterCards" />
+        :url="route('users.withhr')" multiple=false change="filterCards" onload="getProjId" />
         @endif
     </div>
 </div>
@@ -42,6 +42,12 @@ $jobsC = $jobs->whereNotIn('status', ['p', 's']);
 
 @section("scripts")
 <script>
+
+function getProjId() {
+    let pid = $('#project_id').val();
+    return pid ? { pid: pid } : {};
+}
+
 function filterCards() {
     let proj = $('[name="project_id"]').val();
     let user = $('[name="user_id"]').val();
