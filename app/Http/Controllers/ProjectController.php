@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Project;
-use App\Models\User;
 use Illuminate\Validation\Rule;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -20,10 +19,27 @@ class ProjectController extends Controller
         'end_date' => 'required|date|after_or_equal:start_date',
     ];
 
+    public function withhr(Request $request)
+    {
+        return $this->raw(Project::where('status', 'a')->orderBy('id')
+            ->where('name', 'like', "%{$request->get("q", '')}%")
+            ->get()->map->getWithHr());
+    }
+
+    public function withhrUsr(Request $request)
+    {
+        $user = $this->getUserObj();
+        $projects = hasRole("sa")
+            ? Project::where('status', 'a')->orderBy('id')
+            : $user->projects()->orderBy('id');
+        return $this->raw($projects
+            ->where('name', 'like', "%{$request->get("q", '')}%")
+            ->get()->map->getWithHr());
+    }
+
     public function index()
     {
-        $users = User::orderBy('uid')->pluck("uid", "id");
-        return view('user.projects', compact('users'));
+        return view('user.projects');
     }
 
     private function mapObj($project, $typ = 0)

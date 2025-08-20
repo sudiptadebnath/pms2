@@ -13,18 +13,11 @@ class JobController extends Controller
     public function index()
     {
         $user = $this->getUserObj();
-        $projects = hasRole("sa") ?
-            Project::orderBy('name')->pluck("name", "id") :
-            $user->projects()->orderBy('name')->pluck('name', 'projects.id');
-        $projectIds = $projects->keys();
-        $users = User::whereHas('projects', function ($q) use ($projectIds) {
-            $q->whereIn('projects.id', $projectIds);
-        })->distinct()->orderBy('uid')->pluck('uid', 'id');
         $jobs = Task::with("project")
-            ->orderBy('updated_at')
+            ->orderBy('sort_order')
             ->get();
         if (!hasRole("sa")) $jobs = $jobs->where("user_id", $user->id);
-        return view('user.jobs', compact('projects', 'users', 'jobs'));
+        return view('user.jobs', compact('jobs'));
     }
 
     public function update(Request $request, $id)

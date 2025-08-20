@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Task;
 use App\Models\Project;
 use App\Models\User;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -26,12 +25,7 @@ class TaskController extends Controller
 
     public function index()
     {
-        $user = $this->getUserObj();
-        $projects = hasRole("sa") ?
-            Project::where('status', 'a')->orderBy('name')->pluck("name", "id") :
-            $user->projects()->orderBy('name')->pluck('name', 'projects.id');
-        $users = User::orderBy('uid')->pluck("uid", "id");
-        return view('user.tasks', compact('projects', 'users'));
+        return view('user.tasks');
     }
 
     private function mapObj($task, $typ = 0)

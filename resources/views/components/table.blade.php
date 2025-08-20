@@ -66,7 +66,7 @@
         @endif
     </h3>
 
-    <table id="{{ $name }}" class="table table-bordered table-hover table-striped w-100">
+    <table id="{{ $name }}" class="table slick table-bordered table-hover table-striped w-100">
         <thead class="table-{{ $style }}">
             <tr>
             @foreach($data as $opt)

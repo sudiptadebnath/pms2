@@ -11,6 +11,21 @@ use Yajra\DataTables\Facades\DataTables;
 class UserController extends Controller
 {
 
+    public function withhr(Request $request)
+    {
+        $q = $request->get('q', '');
+        $pid = $request->get('pid');
+        $query = User::orderBy('uid')
+            ->where('uid', 'like', "%{$q}%");
+        if ($pid) {
+            $query->whereHas('projects', function ($q) use ($pid) {
+                $q->where('projects.id', $pid);
+            });
+        }
+        $users = $query->get()->map->getWithHr();
+        return $this->raw($users);
+    }
+
     public function data(Request $request)
     {
         $query = User::select(['id', 'uid', 'email', 'role', 'stat', 'created_at', 'logged_at'])

@@ -22,6 +22,11 @@ abstract class Controller
         return response()->json($ans, $status);
     }
 
+    protected function raw($data)
+    {
+        return response()->json($data);
+    }
+
     public function hello()
     {
         return $this->ok("hello");

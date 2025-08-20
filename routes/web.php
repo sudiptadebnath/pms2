@@ -30,6 +30,7 @@ Route::middleware('check.user.session')->prefix('user')->group(function () {
     Route::prefix('users')->group(function () {
         Route::get('/', fn() => view("user.users"));
         Route::get('/data', [UserController::class, 'data'])->name('users.data');
+        Route::get('/withhr', [UserController::class, 'withhr'])->name('users.withhr');
         Route::get('/{id}', [UserController::class, 'get']);
         Route::put('/{id}', [UserController::class, 'update']);
         Route::delete('/{id}', [UserController::class, 'delete']);
@@ -39,6 +40,8 @@ Route::middleware('check.user.session')->prefix('user')->group(function () {
         Route::get('/', [ProjectController::class, 'index']);
         Route::post('/add', [ProjectController::class, 'create']);
         Route::get('/all', [ProjectController::class, 'getall'])->name('projects.getall');
+        Route::get('/withhr', [ProjectController::class, 'withhr'])->name('projects.withhr');
+        Route::get('/withhr/user', [ProjectController::class, 'withhrUsr'])->name('projects.withhrUsr');
         Route::get('/{id}', [ProjectController::class, 'get']);
         Route::post('/{id}', [ProjectController::class, 'update']);
         Route::delete('/{id}', [ProjectController::class, 'delete']);

@@ -45,7 +45,7 @@
             <x-datetime size="6" name="start_date" title="Start Date" required=false />
             <x-datetime size="6" name="end_date" title="End Date" required=false />
             <x-richtext name="description" title="Description" required=true />
-            <x-mselect icon="people" name="users" title="users" :value="$users" />
+            <x-mselect icon="people" name="users" title="users" :url="route('users.withhr')" />
         </div>
         </div>
         <div class="modal-footer">

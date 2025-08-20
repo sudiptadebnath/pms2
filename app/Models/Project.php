@@ -30,4 +30,18 @@ class Project extends Model
     {
         return $this->hasMany(Task::class, 'project_id');
     }
+
+    public function getHoursAttribute()
+    {
+        return $this->tasks()->sum('target_hour');
+    }
+
+    public function getWithHr()
+    {
+        return [
+            'id'    => $this->id,
+            'name'  => $this->name,
+            'hours' => $this->hours,
+        ];
+    }
 }

@@ -47,10 +47,12 @@
         <div class="modal-body">
         <div class="row gy-2">
             <input type="hidden" id="id" name="id" />
-            <x-mselect icon="clipboard-data" name="project_id" title="Project" :value="$projects" multiple=false />
+            <x-mselect icon="clipboard-data" name="project_id" title="Project" 
+                :url="route('projects.withhrUsr')" multiple=false change="changeProj" />
             <x-text icon="laptop" name="title" title="Title" required=true />
             <x-richtext name="description" title="Description" />
-            <x-mselect icon="person" name="user_id" title="User" :value="[]" multiple=false />
+            <x-mselect icon="person" name="user_id" title="User" 
+                :url="route('users.withhr')" multiple=false onload="getProjId" />
             <x-number icon="alarm" name="target_hour" title="Target Hour" required=true />
         </div>
         </div>
@@ -68,23 +70,32 @@
 @section('scripts')
 <script>
 
-function loadUsers(pid,sel) {
-    if (!pid) return;
-    let $userSelect = $('#user_id');
-    webserv("GET","projects/"+pid+"/users",{}, function (d) {
-        $userSelect.empty(); 
-        $userSelect.append('<option value="">Select User</option>');
-        $.each(d["data"], function (i, user) {
-            let option = new Option(user.uid, user.id, false, user.id == (typeof sel === 'undefined' ? '' : sel));
-            $userSelect.append(option);
-        });        
-        $userSelect.trigger('change');
-    });
+function changeProj(pid) {
+    //setSelect2("user_id");
 }
 
-$('#project_id').on('change', function () {
-    loadUsers($(this).val());
-});
+function setSelect2(nm,vls="") {
+    console.log(nm,vls);
+    let $select = $('#'+nm);
+    $select.val(null).trigger('change');
+    $select.select2('open'); 
+    $select.select2('close');
+    if(vls) {
+        setTimeout(() => {
+            let ids = [];
+            $(`#${nm} li`).each(function () {
+                ids.push($(this).attr('data-select2-id'));
+            });
+            console.log(ids);
+            $select.val(vls).trigger('change');
+        }, 1000);
+    }
+}
+
+function getProjId() {
+    let pid = $('#project_id').val();
+    return pid ? { pid: pid } : {};
+}
 
 $(document).ready(function () {
     $("#taskForm").validate({
@@ -148,8 +159,8 @@ $(document).ready(function () {
 function addTask() {
     $('#taskForm')[0].reset();
     $('#id').val(''); 
-    loadUsers($('#project_id').val());
-    $('#users').val(null).trigger('change');
+    setSelect2("project_id");
+    setSelect2("user_id");
     $('#description').summernote('code', "");
     $('#taskModalLabel').text("Add Task");
     $('.error').text('');
@@ -158,13 +169,14 @@ function addTask() {
 
 function editTask(id) {
     webserv("GET",`tasks/${id}`, {}, function (d) {
+        // console.log(d["data"]);
         let data = d["data"];
-        $('#project_id').val(data.project_id).trigger('change');
+        setSelect2("project_id", data.project_id);
+        setSelect2("user_id", data.user_id);
         $('#id').val(data.id);
         $('#title').val(data.title);
         $('#description').summernote('code', data.description ?? "");
         $('#target_hour').val(data.target_hour);
-        loadUsers($('#project_id').val(),data.user_id);
         $('#taskModalLabel').text('Edit Task');
         $('#taskModal').modal('show');
     });    

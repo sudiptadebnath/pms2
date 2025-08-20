@@ -1,6 +1,7 @@
 <?php
 
 use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 
 if (!function_exists('hasRole')) {
     function hasRole($roles)
@@ -113,3 +114,53 @@ if (!function_exists('dttmsql')) {
     }
 }
 
+if (!function_exists('calcHr')) {
+    function calcHr($start, $end)
+    {
+
+        $holidays = [
+            '2025-01-26',
+            '2025-08-15',
+            '2025-10-02',
+        ];
+
+        $workStart = "09:30";
+        $workEnd   = "18:00";
+        $lunchStart = "13:30";
+        $lunchEnd   = "14:00";
+        $maxHoursPerDay = 8.0;
+
+        $totalHours = 0;
+
+        $period = CarbonPeriod::create($start->copy()->startOfDay(), $end->copy()->endOfDay());
+
+        foreach ($period as $date) {
+            // Skip Sat, Sun, and holidays
+            if ($date->isWeekend() || in_array($date->toDateString(), $holidays)) {
+                continue;
+            }
+
+            // Build workday boundaries for this date
+            $dayStart = $date->copy()->setTimeFromTimeString($workStart);
+            $dayEnd   = $date->copy()->setTimeFromTimeString($workEnd);
+            $lunchS   = $date->copy()->setTimeFromTimeString($lunchStart);
+            $lunchE   = $date->copy()->setTimeFromTimeString($lunchEnd);
+
+            // Clamp actual start/end within working hours
+            $currentStart = $start->greaterThan($dayStart) ? $start : $dayStart;
+            $currentEnd   = $end->lessThan($dayEnd) ? $end : $dayEnd;
+
+            if ($currentStart < $dayEnd && $currentEnd > $dayStart) {
+                $diff = $currentStart->diffInMinutes($currentEnd) / 60;
+
+                // Deduct lunch if time spans across it
+                if ($currentStart < $lunchE && $currentEnd > $lunchS) {
+                    $diff -= 0.5;
+                }
+
+                $totalHours += min($diff, $maxHoursPerDay);
+            }
+        }
+        return $totalHours;
+    }
+}

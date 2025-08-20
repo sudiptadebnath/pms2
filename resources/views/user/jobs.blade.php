@@ -23,9 +23,11 @@ $jobsC = $jobs->whereNotIn('status', ['p', 's']);
 <div class="container mb-3">
     <div class="d-flex flex-wrap gap-2 justify-content-between border-1 border-bottom pb-2">
         <h3 class="col-md-1">Jobs</h3> 
-        <x-mselect size="5" icon="" name="project_id" title="Project" :value="$projects" multiple=false change="filterCards" />
+        <x-mselect size="5" icon="" name="project_id" title="Project" 
+        :url="route('projects.withhrUsr')" multiple=false change="filterCards" />
         @if(hasRole("sam")) 
-        <x-mselect size="5" icon="" name="user_id" title="User" :value="$users" multiple=false change="filterCards" />
+        <x-mselect size="5" icon="" name="user_id" title="User" 
+        :url="route('users.withhr')" multiple=false change="filterCards" />
         @endif
     </div>
 </div>
