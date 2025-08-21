@@ -181,24 +181,20 @@
 <script>
 
 function changeProj(pid) {
-    //setSelect2("user_id");
+    setSelect2("user_id");
 }
 
-function setSelect2(nm,vls="") {
-    console.log(nm,vls);
-    let $select = $('#'+nm);
-    $select.val(null).trigger('change');
-    $select.select2('open'); 
-    $select.select2('close');
-    if(vls) {
-        setTimeout(() => {
-            let ids = [];
-            $(`#${nm} li`).each(function () {
-                ids.push($(this).attr('data-select2-id'));
-            });
-            console.log(ids);
-            $select.val(vls).trigger('change');
-        }, 1000);
+function setSelect2(nm,vls="",txt="") {
+    let $el = $('#' + nm);
+    if (!vls) {
+        $el.val(null).trigger('change');
+        return;
+    }
+    if ($el.find("option[value='" + vls + "']").length) {
+        $el.val(vls).trigger('change');
+    } else {
+        let newOption = new Option(txt ?? vls, vls, true, true);
+        $el.append(newOption).trigger('change');
     }
 }
 
@@ -259,7 +255,7 @@ $(document).ready(function () {
         let id =$('#id').val();
         webserv("POST", id ? `tasks/${id}` : `tasks/add`, "taskForm", function ok(d) {
             toastr.success(d["msg"]);
-            $('#taskModal').modal('hide');
+            if(id) $('#taskModal').modal('hide');
             $('#taskTable').DataTable().ajax.reload();
         });
     });
@@ -281,8 +277,8 @@ function editTask(id) {
     webserv("GET",`tasks/${id}`, {}, function (d) {
         // console.log(d["data"]);
         let data = d["data"];
-        setSelect2("project_id", data.project_id);
-        setSelect2("user_id", data.user_id);
+        setSelect2("project_id", data.project_id, data.project.name);
+        setSelect2("user_id", data.user_id, data.user.uid);
         $('#id').val(data.id);
         $('#title').val(data.title);
         $('#description').summernote('code', data.description ?? "");

@@ -115,7 +115,7 @@ if (!function_exists('dttmsql')) {
 }
 
 if (!function_exists('calcHr')) {
-    function calcHr($start, $end)
+    function calcHr($start, $end, $weight)
     {
 
         $holidays = [
@@ -161,6 +161,6 @@ if (!function_exists('calcHr')) {
                 $totalHours += min($diff, $maxHoursPerDay);
             }
         }
-        return $totalHours;
+        return $totalHours * $weight;
     }
 }

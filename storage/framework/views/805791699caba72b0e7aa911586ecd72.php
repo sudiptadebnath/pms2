@@ -78,6 +78,7 @@ unset($__defined_vars, $__key, $__value); ?>
                             <?php $__currentLoopData = $itm['tasks']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $tsk): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <li class="list-group-item d-flex justify-content-between align-items-center px-2 py-1">
                                     <span><?php echo e($tsk['title'] ?? 'Untitled Task'); ?></span>
+                                    <span><?php echo e($tsk['user']['uid'] ?? 'User'); ?></span>
                                     <span class="badge bg-<?php echo e(($tsk['status'] ?? '') === 'done' ? 'success' : 'secondary'); ?>">
                                         <?php echo e(ucfirst($tsk['status'] ?? 'pending')); ?>
 

@@ -43,6 +43,7 @@ class Task extends Model
         $start = $this->start_date;
         if (!$start) return 0;
         $end = $this->end_date ?? now();
-        return $this->used_hour + calcHr($start, $end);
+        $weight = $this->user?->cur_hrs / $this->target_hour;
+        return $this->used_hour + calcHr($start, $end, $weight);
     }
 }

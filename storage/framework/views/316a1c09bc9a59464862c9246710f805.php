@@ -23,14 +23,14 @@ $jobsC = $jobs->whereNotIn('status', ['p', 's']);
         <h3 class="col-md-1">Jobs</h3> 
         <?php if (isset($component)) { $__componentOriginal20bb1f77d056b8fba1ac560ae63e55c3 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal20bb1f77d056b8fba1ac560ae63e55c3 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.mselect','data' => ['size' => '5','icon' => '','name' => 'project_id','title' => 'Project','url' => route('projects.withhr'),'multiple' => 'false','change' => 'filterCards']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.mselect','data' => ['size' => '5','icon' => '','name' => 'project_id','title' => 'Project','url' => route('projects.withhrUsr'),'multiple' => 'false','change' => 'filterCards']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('mselect'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
 <?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['size' => '5','icon' => '','name' => 'project_id','title' => 'Project','url' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(route('projects.withhr')),'multiple' => 'false','change' => 'filterCards']); ?>
+<?php $component->withAttributes(['size' => '5','icon' => '','name' => 'project_id','title' => 'Project','url' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(route('projects.withhrUsr')),'multiple' => 'false','change' => 'filterCards']); ?>
 <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginal20bb1f77d056b8fba1ac560ae63e55c3)): ?>
@@ -44,14 +44,14 @@ $jobsC = $jobs->whereNotIn('status', ['p', 's']);
         <?php if(hasRole("sam")): ?> 
         <?php if (isset($component)) { $__componentOriginal20bb1f77d056b8fba1ac560ae63e55c3 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal20bb1f77d056b8fba1ac560ae63e55c3 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.mselect','data' => ['size' => '5','icon' => '','name' => 'user_id','title' => 'User','url' => route('users.withhr'),'multiple' => 'false','change' => 'filterCards']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.mselect','data' => ['size' => '5','icon' => '','name' => 'user_id','title' => 'User','url' => route('users.withhr'),'multiple' => 'false','change' => 'filterCards','onload' => 'getProjId']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('mselect'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
 <?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['size' => '5','icon' => '','name' => 'user_id','title' => 'User','url' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(route('users.withhr')),'multiple' => 'false','change' => 'filterCards']); ?>
+<?php $component->withAttributes(['size' => '5','icon' => '','name' => 'user_id','title' => 'User','url' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(route('users.withhr')),'multiple' => 'false','change' => 'filterCards','onload' => 'getProjId']); ?>
 <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginal20bb1f77d056b8fba1ac560ae63e55c3)): ?>
@@ -133,6 +133,12 @@ $jobsC = $jobs->whereNotIn('status', ['p', 's']);
 
 <?php $__env->startSection("scripts"); ?>
 <script>
+
+function getProjId() {
+    let pid = $('#project_id').val();
+    return pid ? { pid: pid } : {};
+}
+
 function filterCards() {
     let proj = $('[name="project_id"]').val();
     let user = $('[name="user_id"]').val();

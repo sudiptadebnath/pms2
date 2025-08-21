@@ -75,19 +75,14 @@ function changeProj(pid) {
 }
 
 function setSelect2(nm,vls="",txt="") {
-    console.log(nm,vls,txt);
     let $el = $('#' + nm);
-
     if (!vls) {
-        $el.val(null).trigger('change'); // clear select2
+        $el.val(null).trigger('change');
         return;
     }
-
-    // If the option already exists, just select it
     if ($el.find("option[value='" + vls + "']").length) {
         $el.val(vls).trigger('change');
     } else {
-        // Create a new option dynamically (needed for AJAX select2)
         let newOption = new Option(txt ?? vls, vls, true, true);
         $el.append(newOption).trigger('change');
     }
@@ -150,7 +145,7 @@ $(document).ready(function () {
         let id =$('#id').val();
         webserv("POST", id ? `tasks/${id}` : `tasks/add`, "taskForm", function ok(d) {
             toastr.success(d["msg"]);
-            $('#taskModal').modal('hide');
+            if(id) $('#taskModal').modal('hide');
             $('#taskTable').DataTable().ajax.reload();
         });
     });

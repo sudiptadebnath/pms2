@@ -33,6 +33,12 @@ class User extends Model
             ->whereIn('status', ['p', 's'])
             ->sum('target_hour');
     }
+    public function getCurHrsAttribute()
+    {
+        return $this->tasks()
+            ->whereIn('status', ['s'])
+            ->sum('target_hour');
+    }
 
     public function getWithHr()
     {
