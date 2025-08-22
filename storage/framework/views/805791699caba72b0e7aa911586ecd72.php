@@ -71,25 +71,44 @@ unset($__defined_vars, $__key, $__value); ?>
                         <em>No members assigned</em>
                     <?php endif; ?>
                 </div>
-                <div class="mb-2">
-                    <strong>Tasks:</strong>
-                    <?php if(!empty($itm['tasks'])): ?>
-                        <ul class="list-group list-group-flush small">
-                            <?php $__currentLoopData = $itm['tasks']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $tsk): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                <li class="list-group-item d-flex justify-content-between align-items-center px-2 py-1">
-                                    <span><?php echo e($tsk['title'] ?? 'Untitled Task'); ?></span>
-                                    <span><?php echo e($tsk['user']['uid'] ?? 'User'); ?></span>
-                                    <span class="badge bg-<?php echo e(($tsk['status'] ?? '') === 'done' ? 'success' : 'secondary'); ?>">
-                                        <?php echo e(ucfirst($tsk['status'] ?? 'pending')); ?>
-
-                                    </span>
-                                </li>
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                        </ul>
-                    <?php else: ?>
-                        <em>No tasks added</em>
-                    <?php endif; ?>
-                </div>
+            <?php if(!empty($itm['tasks'])): ?>
+                <?php
+                    $opts = [
+                        "rawdata"=>$itm['tasks']->map(function($t) {
+                            return [
+                                "title"=> $t->title,
+                                "status"=> $t->status,
+                                "user"=> $t->user->uid,
+                            ];
+                        }),
+                    ];
+                    $tbldata = [
+                        [ 'data'=>'title' ], 
+                        [ 'data'=>'user' ], 
+                        [ 'data'=>'*status','className'=>'text-center' ], 
+                    ];
+                ?>
+                <?php if (isset($component)) { $__componentOriginal163c8ba6efb795223894d5ffef5034f5 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal163c8ba6efb795223894d5ffef5034f5 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.table','data' => ['name' => 'jobs_'.e($itm['id']).'','title' => 'Tasks','data' => $tbldata,'opts' => $opts]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('table'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['name' => 'jobs_'.e($itm['id']).'','title' => 'Tasks','data' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($tbldata),'opts' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($opts)]); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal163c8ba6efb795223894d5ffef5034f5)): ?>
+<?php $attributes = $__attributesOriginal163c8ba6efb795223894d5ffef5034f5; ?>
+<?php unset($__attributesOriginal163c8ba6efb795223894d5ffef5034f5); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal163c8ba6efb795223894d5ffef5034f5)): ?>
+<?php $component = $__componentOriginal163c8ba6efb795223894d5ffef5034f5; ?>
+<?php unset($__componentOriginal163c8ba6efb795223894d5ffef5034f5); ?>
+<?php endif; ?>
+            <?php endif; ?>                    
             </div>
         </div>
     </div>

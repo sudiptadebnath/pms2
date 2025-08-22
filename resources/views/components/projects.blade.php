@@ -36,24 +36,25 @@
                         <em>No members assigned</em>
                     @endif
                 </div>
-                <div class="mb-2">
-                    <strong>Tasks:</strong>
-                    @if(!empty($itm['tasks']))
-                        <ul class="list-group list-group-flush small">
-                            @foreach($itm['tasks'] as $tsk)
-                                <li class="list-group-item d-flex justify-content-between align-items-center px-2 py-1">
-                                    <span>{{ $tsk['title'] ?? 'Untitled Task' }}</span>
-                                    <span>{{ $tsk['user']['uid'] ?? 'User' }}</span>
-                                    <span class="badge bg-{{ ($tsk['status'] ?? '') === 'done' ? 'success' : 'secondary' }}">
-                                        {{ ucfirst($tsk['status'] ?? 'pending') }}
-                                    </span>
-                                </li>
-                            @endforeach
-                        </ul>
-                    @else
-                        <em>No tasks added</em>
-                    @endif
-                </div>
+            @if(!empty($itm['tasks']))
+                @php
+                    $opts = [
+                        "rawdata"=>$itm['tasks']->map(function($t) {
+                            return [
+                                "title"=> $t->title,
+                                "status"=> $t->status,
+                                "user"=> $t->user->uid,
+                            ];
+                        }),
+                    ];
+                    $tbldata = [
+                        [ 'data'=>'title' ], 
+                        [ 'data'=>'user' ], 
+                        [ 'data'=>'*status','className'=>'text-center' ], 
+                    ];
+                @endphp
+                <x-table name="jobs_{{ $itm['id'] }}" title="Tasks" :data=$tbldata :opts=$opts />
+            @endif                    
             </div>
         </div>
     </div>

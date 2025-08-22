@@ -8,11 +8,13 @@
 
 @php
 
-    function getTH($nm,$st) {
-        $ans = $nm;
-        $ans = preg_replace('/[^a-zA-Z0-9]+/', ' ', $ans);
-        $ans = ucwords(strtolower(trim($ans)));
-        return $st.$ans;
+    if (!function_exists('getTH')) {
+        function getTH($nm,$st) {
+            $ans = $nm;
+            $ans = preg_replace('/[^a-zA-Z0-9]+/', ' ', $ans);
+            $ans = ucwords(strtolower(trim($ans)));
+            return $st.$ans;
+        }
     }
 
     foreach($data as &$itm) {
@@ -38,6 +40,7 @@
         "edit"=>"",
         "delete"=>"",
         "actions"=>"",
+        "rawdata"=>[],
         "imp"=>[],
     ], $opts);
     extract($opts);
@@ -130,9 +133,13 @@ $(document).ready(function () {
     @else
         scrollX: true,
     @endif
+    @if($url)
         processing: true,
         serverSide: true,
         ajax: "{{ $url }}",
+    @else
+        data: @json($opts['rawdata'] ?? []),
+    @endif
     @if($imp)
         buttons: [
 			{ extend: 'copy', filename: '{{ $efnm }}', title: '{{ $title }}', 
