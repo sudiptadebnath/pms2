@@ -65,6 +65,7 @@ Route::middleware('check.user.session')->prefix('user')->group(function () {
 
     Route::prefix('comments')->group(function () {
         Route::post('/getall', [CommentController::class, 'getall']);
+        Route::post('/cnts', [CommentController::class, 'cnts']);
         Route::post('/add', [CommentController::class, 'add']);
     });
 });

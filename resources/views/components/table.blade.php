@@ -42,15 +42,20 @@
         "actions"=>"",
         "rawdata"=>[],
         "imp"=>[],
+        "plain"=>false,
     ], $opts);
     extract($opts);
     $act = ($add || $edit || $delete || $actions);
     $efnm = str_replace(" ","_",$title);
-    $autoWidth = true;
+    $autoWidth = $responsive;
 @endphp
 
-
-<div class="container vw-100 mb-3">
+@if($responsive)
+<div class="container mb-3 vw-100">
+@else
+<div>
+@endif
+    @if(!$plain)
     <h3 class="d-flex border-1 border-bottom pb-2">
         {{ $title }}
         @if($imp)
@@ -68,6 +73,7 @@
         </div>
         @endif
     </h3>
+    @endif
 
     <table id="{{ $name }}" class="table slick table-bordered table-hover table-striped w-100">
         <thead class="table-{{ $style }}">
@@ -132,6 +138,11 @@ $(document).ready(function () {
         responsive: true,
     @else
         scrollX: true,
+    @endif
+    @if($plain)
+        paging: false, 
+        searching: false,
+        info: false,
     @endif
     @if($url)
         processing: true,

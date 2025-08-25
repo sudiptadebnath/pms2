@@ -15,12 +15,6 @@
         "add"=>"addUser",
         "edit"=>"editUser",
         "delete"=>"delUser",
-        "actions"=>'
-            <button type="button" class="btn btn-link text-warning px-1"
-            onclick="showComment(\'Comments\',null,null,__)">
-                <i class="bi bi-chat-dots"></i>
-            </button>
-        ',
     ];
     $tbldata = [
         // [ 'th'=>'ID','data'=>'id','name'=>'id','className'=>'text-end', ], 
@@ -57,11 +51,11 @@
   <div class="modal-dialog">
     <form id="userForm">
       <div class="modal-content">
-        <div class="modal-header">
+        <div class="modal-header bg-primary text-white py-2">
           <h5 class="modal-title" id="userModalLabel">Add User</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body p-2">
         <div class="row gy-2">
             <input type="hidden" id="id" name="id" />
             <?php if (isset($component)) { $__componentOriginal722f54fa328c8aa4ec9129f4c623ee05 = $component; } ?>
@@ -186,9 +180,9 @@
 <?php endif; ?>
         </div>
         </div>
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-primary">Save</button>
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <div class="modal-footer py-0">
+          <button type="submit" class="btn btn-sm btn-primary">Save</button>
+          <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Cancel</button>
         </div>
       </div>
     </form>

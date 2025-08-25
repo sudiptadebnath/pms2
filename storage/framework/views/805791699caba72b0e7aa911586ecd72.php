@@ -42,16 +42,57 @@ unset($__defined_vars, $__key, $__value); ?>
     ?>
     <div class="accordion-item">
         <h2 class="accordion-header" id="<?php echo e($headingId); ?>">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
-                data-bs-target="#<?php echo e($collapseId); ?>" aria-expanded="true" aria-controls="<?php echo e($collapseId); ?>">
-                <?php echo e($itm['name']); ?>
-
+            <button class="accordion-button collapsed d-flex align-items-center" type="button" data-bs-toggle="collapse" 
+            data-bs-target="#<?php echo e($collapseId); ?>" aria-expanded="true" aria-controls="<?php echo e($collapseId); ?>">
+                <span class="me-2"><?php echo e($itm['name']); ?></span>
+                <?php if (isset($component)) { $__componentOriginala2fc35506c2934933d1f1fa29657f70c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginala2fc35506c2934933d1f1fa29657f70c = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.cmntbtn','data' => ['id' => 'proj2_'.e($itm['id']).'','icon' => 'chat-left-dots','title' => 'Note - '.e($itm['name']).'','pid' => ''.e($itm['id']).'']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('cmntbtn'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['id' => 'proj2_'.e($itm['id']).'','icon' => 'chat-left-dots','title' => 'Note - '.e($itm['name']).'','pid' => ''.e($itm['id']).'']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginala2fc35506c2934933d1f1fa29657f70c)): ?>
+<?php $attributes = $__attributesOriginala2fc35506c2934933d1f1fa29657f70c; ?>
+<?php unset($__attributesOriginala2fc35506c2934933d1f1fa29657f70c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginala2fc35506c2934933d1f1fa29657f70c)): ?>
+<?php $component = $__componentOriginala2fc35506c2934933d1f1fa29657f70c; ?>
+<?php unset($__componentOriginala2fc35506c2934933d1f1fa29657f70c); ?>
+<?php endif; ?>
             </button>
         </h2>
         <div id="<?php echo e($collapseId); ?>" class="accordion-collapse collapse" aria-labelledby="<?php echo e($headingId); ?>" data-bs-parent="#projAcrd">
             <div class="accordion-body">
+                <div class="d-flex align-items-center justify-content-between">
                 <?php echo $itm['description']; ?>
 
+                <?php if (isset($component)) { $__componentOriginala2fc35506c2934933d1f1fa29657f70c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginala2fc35506c2934933d1f1fa29657f70c = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.cmntbtn','data' => ['id' => 'proj_'.e($itm['id']).'','icon' => 'chat-left-dots','title' => 'Note - '.e($itm['name']).'','pid' => ''.e($itm['id']).'']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('cmntbtn'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['id' => 'proj_'.e($itm['id']).'','icon' => 'chat-left-dots','title' => 'Note - '.e($itm['name']).'','pid' => ''.e($itm['id']).'']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginala2fc35506c2934933d1f1fa29657f70c)): ?>
+<?php $attributes = $__attributesOriginala2fc35506c2934933d1f1fa29657f70c; ?>
+<?php unset($__attributesOriginala2fc35506c2934933d1f1fa29657f70c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginala2fc35506c2934933d1f1fa29657f70c)): ?>
+<?php $component = $__componentOriginala2fc35506c2934933d1f1fa29657f70c; ?>
+<?php unset($__componentOriginala2fc35506c2934933d1f1fa29657f70c); ?>
+<?php endif; ?>
+                </div>
                 <hr>
                 <div class="mb-2">
                     <strong>Duration:</strong>
@@ -72,20 +113,23 @@ unset($__defined_vars, $__key, $__value); ?>
                     <?php endif; ?>
                 </div>
             <?php if(!empty($itm['tasks'])): ?>
+            <div>
+                <strong>Tasks:</strong> 
                 <?php
                     $opts = [
+                        "plain"=>true,
                         "rawdata"=>$itm['tasks']->map(function($t) {
                             return [
-                                "title"=> $t->title,
+                                "tasks"=> $t->title,
                                 "status"=> $t->status,
                                 "user"=> $t->user->uid,
                             ];
                         }),
                     ];
                     $tbldata = [
-                        [ 'data'=>'title' ], 
+                        [ 'data'=>'tasks' ], 
                         [ 'data'=>'user' ], 
-                        [ 'data'=>'*status','className'=>'text-center' ], 
+                        [ 'data'=>'*status','className'=>'text-center', 'visible'=>false ], 
                     ];
                 ?>
                 <?php if (isset($component)) { $__componentOriginal163c8ba6efb795223894d5ffef5034f5 = $component; } ?>
@@ -108,10 +152,18 @@ unset($__defined_vars, $__key, $__value); ?>
 <?php $component = $__componentOriginal163c8ba6efb795223894d5ffef5034f5; ?>
 <?php unset($__componentOriginal163c8ba6efb795223894d5ffef5034f5); ?>
 <?php endif; ?>
+            </div>
             <?php endif; ?>                    
             </div>
         </div>
     </div>
 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 </div>
-<?php /**PATH D:\wamp64\www\pms2\resources\views/components/projects.blade.php ENDPATH**/ ?>
+
+<?php $__env->startPush("scripts"); ?>
+<script>
+$('#projAcrd').on('shown.bs.collapse', function () {
+    $(this).find('table.dataTable').DataTable().columns.adjust();
+});    
+</script>
+<?php $__env->stopPush(); ?><?php /**PATH D:\wamp64\www\pms2\resources\views/components/projects.blade.php ENDPATH**/ ?>

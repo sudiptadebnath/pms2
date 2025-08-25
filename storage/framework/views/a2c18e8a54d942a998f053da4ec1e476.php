@@ -29,27 +29,26 @@ foreach ($attributes->all() as $__key => $__value) {
 unset($__defined_vars, $__key, $__value); ?>
 
 <div class="modal fade" id="commentModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" style="max-width: 250px; margin:auto;">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
 
-            <div class="modal-header bg-primary text-white py-1">
+            <div class="modal-header py-1">
                 <p class="modal-title"><i class="bi bi-chat-dots me-2"></i><span id="commentModalTitle">Comments</span></p>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
 
-            <div class="modal-body d-flex flex-column p-1" style="height: 400px;">
+            <div class="modal-body p-1">
                 <!-- Chat History -->
-                <div id="commentModal-chat-history" class="flex-grow-1 overflow-auto border rounded p-2 mb-1 bg-light">
-                </div>
+                <div id="commentModal-chat-history" class="chat-history"></div>
 
                 <!-- Message Input -->
                 <div class="d-flex align-items-center">
                 <form id="commentForm" enctype="multipart/form-data" method="POST" 
                 action="/comments/add" class="d-flex w-100" onsubmit="return putComment();">
                     <?php echo csrf_field(); ?>
-                    <input type="hidden" id="pid" name="pid">
-                    <input type="hidden" id="tid" name="tid">
-                    <input type="hidden" id="uid" name="uid">
+                    <input type="hidden" id="cmnt_pid" name="cmnt_pid">
+                    <input type="hidden" id="cmnt_tid" name="cmnt_tid">
+                    <input type="hidden" id="cmnt_uid" name="cmnt_uid">
 
                     <label for="file" class="btn btn-outline-secondary me-1 mb-0">
                         <i class="bi bi-paperclip"></i>
@@ -74,14 +73,37 @@ unset($__defined_vars, $__key, $__value); ?>
 
 let bspth = "<?php echo e(asset("public/storage/comments")); ?>";
 
-function showComment(title="Comment", pid=null, tid=null, uid =null) {
+function showComment(title="Comment", icon="bi-chat-dots", style="bg-primary text-white", cmnt_pid=null, cmnt_tid=null, cmnt_uid =null) {
+
     $("#commentModalTitle").html(title);
+
+    $("#commentModalTitle").closest('.modal-title').find("i")
+        .removeClass(function (index, className) {
+            return (className.match(/(^|\s)(bi)-\S+/g) || []).join(' ');
+        })
+        .addClass("bi-"+icon);
+    $("#commentModalTitle").closest('.modal-header')
+        .removeClass(function (index, className) {
+            return (className.match(/(^|\s)(bg|text)-\S+/g) || []).join(' ');
+        })
+        .addClass(style);
+    $("#commentModalTitle").closest('.modal-header').find('.btn-close')
+        .removeClass(function (index, className) {
+            return (className.match(/(^|\s)(btn-close)-\S+/g) || []).join(' ');
+        })
+        .addClass(style.replace(/\b(?:bg|text)-\S+\b/g, "").trim());
+    $("#commentModalTitle").closest('.modal').find('.modal-body').find('button')
+        .removeClass(function (index, className) {
+            return (className.match(/(^|\s)(bg|text)-\S+/g) || []).join(' ');
+        })
+        .addClass(style);
+
     var modalEl = $('#commentModal');
     if (modalEl.length === 0) return;
-    $('#pid').val(pid);
-    $('#tid').val(tid);
-    $('#uid').val(uid);
-    webserv("POST","comments/getall",{pid,tid,uid}, handleComments);
+    $('#cmnt_pid').val(cmnt_pid);
+    $('#cmnt_tid').val(cmnt_tid);
+    $('#cmnt_uid').val(cmnt_uid);
+    webserv("POST","comments/getall",{cmnt_pid,cmnt_tid,cmnt_uid}, handleComments);
     var modal = bootstrap.Modal.getOrCreateInstance(modalEl[0]);
     modal.show();
 }

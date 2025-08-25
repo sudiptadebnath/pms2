@@ -76,15 +76,20 @@ unset($__defined_vars, $__key, $__value); ?>
         "actions"=>"",
         "rawdata"=>[],
         "imp"=>[],
+        "plain"=>false,
     ], $opts);
     extract($opts);
     $act = ($add || $edit || $delete || $actions);
     $efnm = str_replace(" ","_",$title);
-    $autoWidth = true;
+    $autoWidth = $responsive;
 ?>
 
-
-<div class="container vw-100 mb-3">
+<?php if($responsive): ?>
+<div class="container mb-3 vw-100">
+<?php else: ?>
+<div>
+<?php endif; ?>
+    <?php if(!$plain): ?>
     <h3 class="d-flex border-1 border-bottom pb-2">
         <?php echo e($title); ?>
 
@@ -103,6 +108,7 @@ unset($__defined_vars, $__key, $__value); ?>
         </div>
         <?php endif; ?>
     </h3>
+    <?php endif; ?>
 
     <table id="<?php echo e($name); ?>" class="table slick table-bordered table-hover table-striped w-100">
         <thead class="table-<?php echo e($style); ?>">
@@ -167,6 +173,11 @@ $(document).ready(function () {
         responsive: true,
     <?php else: ?>
         scrollX: true,
+    <?php endif; ?>
+    <?php if($plain): ?>
+        paging: false, 
+        searching: false,
+        info: false,
     <?php endif; ?>
     <?php if($url): ?>
         processing: true,

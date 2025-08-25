@@ -41,10 +41,8 @@
             {{ $job["description"] }}
         </div>
         <div class="d-flex justify-content-between flex-wrap">
-        <button type="button" class="btn btn-link text-primary px-1" title="Comments"
-        onclick="showComment('Comments',{{$job->project->id}},{{ $job->id }},{{ $job->user->id }})">
-            <i class="bi bi-chat-dots"></i>
-        </button>
+        <x-cmntbtn id="job_{{ $job['id'] }}" icon="bell" title="Chat - {{ $job['title'] }}" style="primary" style2="white"
+        pid="{{$job->project->id}}" tid="{{ $job->user->id }}" /> 
         <div>
     @switch($job["status"])
 

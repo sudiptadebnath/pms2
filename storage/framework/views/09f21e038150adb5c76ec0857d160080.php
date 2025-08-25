@@ -40,7 +40,7 @@ foreach ($attributes->all() as $__key => $__value) {
 
 unset($__defined_vars, $__key, $__value); ?>
 
-<?php if (! $__env->hasRenderedOnce('c96e5750-7f93-4e83-b4e2-abb93d8297f1')): $__env->markAsRenderedOnce('c96e5750-7f93-4e83-b4e2-abb93d8297f1'); ?>
+<?php if (! $__env->hasRenderedOnce('77e51638-3dcf-455d-bb3a-b976790d6cde')): $__env->markAsRenderedOnce('77e51638-3dcf-455d-bb3a-b976790d6cde'); ?>
 <?php $__env->startPush('styles'); ?>
 <style>
 .card.cls-p { background-color:#fbfbfb !important;  }
@@ -78,10 +78,26 @@ unset($__defined_vars, $__key, $__value); ?>
 
         </div>
         <div class="d-flex justify-content-between flex-wrap">
-        <button type="button" class="btn btn-link text-primary px-1" title="Comments"
-        onclick="showComment('Comments',<?php echo e($job->project->id); ?>,<?php echo e($job->id); ?>,<?php echo e($job->user->id); ?>)">
-            <i class="bi bi-chat-dots"></i>
-        </button>
+        <?php if (isset($component)) { $__componentOriginala2fc35506c2934933d1f1fa29657f70c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginala2fc35506c2934933d1f1fa29657f70c = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.cmntbtn','data' => ['id' => 'job_'.e($job['id']).'','icon' => 'bell','title' => 'Chat - '.e($job['title']).'','style' => 'primary','style2' => 'white','pid' => ''.e($job->project->id).'','tid' => ''.e($job->user->id).'']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('cmntbtn'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['id' => 'job_'.e($job['id']).'','icon' => 'bell','title' => 'Chat - '.e($job['title']).'','style' => 'primary','style2' => 'white','pid' => ''.e($job->project->id).'','tid' => ''.e($job->user->id).'']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginala2fc35506c2934933d1f1fa29657f70c)): ?>
+<?php $attributes = $__attributesOriginala2fc35506c2934933d1f1fa29657f70c; ?>
+<?php unset($__attributesOriginala2fc35506c2934933d1f1fa29657f70c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginala2fc35506c2934933d1f1fa29657f70c)): ?>
+<?php $component = $__componentOriginala2fc35506c2934933d1f1fa29657f70c; ?>
+<?php unset($__componentOriginala2fc35506c2934933d1f1fa29657f70c); ?>
+<?php endif; ?> 
         <div>
     <?php switch($job["status"]):
 
@@ -111,7 +127,7 @@ unset($__defined_vars, $__key, $__value); ?>
 
 </div>
 
-<?php if (! $__env->hasRenderedOnce('7d45842a-ea7a-4b34-bc59-7081ede5b5f2')): $__env->markAsRenderedOnce('7d45842a-ea7a-4b34-bc59-7081ede5b5f2'); ?>
+<?php if (! $__env->hasRenderedOnce('67e37831-65ce-477e-90b2-e7bc7d360b5a')): $__env->markAsRenderedOnce('67e37831-65ce-477e-90b2-e7bc7d360b5a'); ?>
 <?php $__env->startPush('scripts'); ?>
 <script>
 function setTaskStat(tid,stat) {
