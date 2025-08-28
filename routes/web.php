@@ -15,9 +15,14 @@ Route::get('/', function () {
     }
     return view('index');
 });
-Route::get('/register', fn() => view("register"));
+
 Route::post('/login', [UserController::class, 'login']);
-Route::post('/register', [UserController::class, 'register']);
+
+Route::middleware('check.allowsignup')->group(function () {
+    Route::get('/register', fn() => view("register"));
+    Route::post('/register', [UserController::class, 'register']);
+});
+
 
 Route::middleware('check.user.session')->prefix('user')->group(function () {
 
@@ -31,6 +36,8 @@ Route::middleware('check.user.session')->prefix('user')->group(function () {
         Route::get('/', fn() => view("user.users"));
         Route::get('/data', [UserController::class, 'data'])->name('users.data');
         Route::get('/withhr', [UserController::class, 'withhr'])->name('users.withhr');
+        Route::get('/settings', fn() => view("user.settings"))->name('user.settings');
+        Route::post('/settings', [UserController::class, 'save_settings'])->name('user.save_settings');
         Route::get('/{id}', [UserController::class, 'get']);
         Route::put('/{id}', [UserController::class, 'update']);
         Route::delete('/{id}', [UserController::class, 'delete']);

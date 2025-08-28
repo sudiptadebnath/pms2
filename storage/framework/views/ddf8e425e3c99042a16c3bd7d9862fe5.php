@@ -8,10 +8,7 @@
   <!-- Settings (Always open) -->
 <?php if(hasRole('s')): ?>
   <li class="nav-item">
-    <span class="nav-link"><i class="bi bi-gear me-2"></i>Settings</span>
-    <ul class="nav flex-column ms-4">
-      <li class="nav-item"><a class="nav-link" href="#">Site</a></li>
-    </ul>
+    <a class="nav-link" href="<?php echo e(route('user.settings')); ?>"><i class="bi bi-gear me-2"></i>Settings</a>
   </li>
 <?php endif; ?>
 

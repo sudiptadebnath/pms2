@@ -105,13 +105,39 @@ function objS(msg, trim = 0) {
 }
 
 function myAlert(msg, typ, yesText, yesAct, noText, noAct) {
-    typ = getval(typ, "success");
+    //console.log("SUDIPTA >> ", msg, typ, yesText, yesAct, noText, noAct);
+    typ = getval(typ, "primary");
     msg = objS(msg);
 
+    // Toast body
     $("#myToast").find(".toast-body").html(msg);
+
+    // Border color class update
+    const $toastInner = $("#myToast .d-flex");
+    $toastInner
+        .removeClass(function (index, className) {
+            return (className.match(/border-\S+/g) || []).join(" ");
+        })
+        .addClass("border-start border-4 border-" + typ);
+
+    // Icon update
+    const $icon = $("#toastIcon");
+    const iconMap = {
+        success: "bi-check-circle-fill",
+        danger: "bi-x-circle-fill",
+        warning: "bi-exclamation-triangle-fill",
+        info: "bi-info-circle-fill",
+        primary: "bi-megaphone",
+        secondary: "bi-dot-circle-fill",
+    };
+    $icon.removeClass().addClass("bi me-3 big-toast-icon text-" + typ);
+    $icon.addClass(iconMap[typ] || "bi-bell-fill");
+
+    // Buttons
     const $btnContainer = $("#toastButtons");
     $btnContainer.empty();
     let callbackToRunAfterClose = null;
+
     if (!undef(yesText)) {
         const $yesBtn = $(
             '<button type="button" class="exbtn btn btn-' +
@@ -119,9 +145,7 @@ function myAlert(msg, typ, yesText, yesAct, noText, noAct) {
                 ' btn-sm me-2"></button>'
         ).text(yesText);
         $yesBtn.on("click", function () {
-            if (typeof yesAct === "function") {
-                callbackToRunAfterClose = yesAct;
-            }
+            if (typeof yesAct === "function") callbackToRunAfterClose = yesAct;
             bootstrap.Toast.getInstance($("#myToast")[0]).hide();
         });
         $btnContainer.append($yesBtn);
@@ -133,21 +157,23 @@ function myAlert(msg, typ, yesText, yesAct, noText, noAct) {
                 ' btn-sm"></button>'
         ).text(noText);
         $noBtn.on("click", function () {
-            if (typeof noAct === "function") {
-                callbackToRunAfterClose = noAct;
-            }
+            if (typeof noAct === "function") callbackToRunAfterClose = noAct;
             bootstrap.Toast.getInstance($("#myToast")[0]).hide();
         });
         $btnContainer.append($noBtn);
     }
+
+    // Backdrop + callbacks
     $("#toastBackdrop").removeClass("d-none");
-    $("#myToast").off("hidden.bs.toast");
-    $("#myToast").on("hidden.bs.toast", function () {
-        $("#toastBackdrop").addClass("d-none");
-        if (typeof callbackToRunAfterClose === "function") {
-            setTimeout(callbackToRunAfterClose, 10);
-        }
-    });
+    $("#myToast")
+        .off("hidden.bs.toast")
+        .on("hidden.bs.toast", function () {
+            $("#toastBackdrop").addClass("d-none");
+            if (typeof callbackToRunAfterClose === "function")
+                setTimeout(callbackToRunAfterClose, 10);
+        });
+
+    // Show
     const toast = new bootstrap.Toast($("#myToast"));
     toast.show();
 }

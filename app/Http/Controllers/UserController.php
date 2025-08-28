@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends Controller
@@ -158,5 +159,14 @@ class UserController extends Controller
         if (!$user) return $this->err("No Such User");
         $user->delete();
         return $this->ok('User deleted successfully');
+    }
+
+    public function save_settings(Request $request)
+    {
+        Log::info("save_settings", $request->all());
+        foreach ($request->except(['_token', '_method']) as $key => $val) {
+            set_setting($key, $val);
+        }
+        return $this->ok("Saved Successfully");
     }
 }

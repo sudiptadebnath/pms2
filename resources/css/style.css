@@ -235,3 +235,20 @@ ul.nav.flex-column {
     vertical-align: baseline;
     border-radius: 10rem;
 }
+
+.big-toast-icon {
+    font-size: 2rem;
+    font-weight: bold;
+    line-height: 1;
+}
+
+.custom-toast-body {
+    max-width: 500px;
+    max-height: 200px;
+    overflow: auto;
+    scrollbar-width: none;
+}
+
+.custom-toast-body::-webkit-scrollbar {
+    display: none;
+}
