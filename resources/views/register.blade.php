@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container d-flex align-items-center justify-content-center login-container h-100">
+<div class="container-fluid d-flex align-items-center justify-content-center login-container h-100">
 <div class="col-md-6 col-lg-4">
 <x-card icon="person-plus" title="Sign up">
     <form id="register" onsubmit="return register_submt()" novalidate="novalidate">

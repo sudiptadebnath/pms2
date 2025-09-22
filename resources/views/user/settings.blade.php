@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container m-3">
+<div class="container-fluid m-0 p-3">
 <div class="row g-2">
     <x-card title="Settings" icon="gear">
         <form id="settings" onsubmit="return settings_submt()" novalidate="novalidate">

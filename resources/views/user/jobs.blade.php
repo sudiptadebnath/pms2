@@ -20,7 +20,7 @@ $jobsC = $jobs->whereNotIn('status', ['p', 's']);
 @endsection
 
 @section('content')
-<div class="container mb-3">
+<div class="container-fluid m-0 p-3">
     <div class="d-flex flex-wrap gap-2 justify-content-between border-1 border-bottom pb-2">
         <h3 class="col-md-1">Jobs</h3> 
         <x-mselect size="5" icon="" name="project_id" title="Project" 
@@ -31,7 +31,7 @@ $jobsC = $jobs->whereNotIn('status', ['p', 's']);
         @endif
     </div>
 </div>
-<div class="container">
+<div class="container-fluid">
 <div class="row">
     <x-jobs size="4" title="Pending" :data="$jobsP" />
     <x-jobs size="4" title="In Progress" :data="$jobsS" />

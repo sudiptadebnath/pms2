@@ -6,6 +6,17 @@
     'opts' => [],
 ])
 
+@once
+    @push("styles")
+    <style>
+    .fullwidth { width: calc(100vw - 20rem) !important; }
+    @media (max-width: 576px) {
+        .fullwidth { width: calc(100vw - 1rem) !important; }
+    }
+    </style>
+    @endpush
+@endonce
+
 @php
 
     if (!function_exists('getTH')) {
@@ -51,7 +62,7 @@
 @endphp
 
 @if($responsive)
-<div class="container mb-3 vw-100">
+<div class="container-fluid m-0 p-3 fullwidth">
 @else
 <div>
 @endif
